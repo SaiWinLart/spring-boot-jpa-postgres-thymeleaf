@@ -1,0 +1,13 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Employee Saved</title>
+    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+</head>
+<body>
+    <h2>Success!</h2>
+    <p th:text="'Employee ' + ${employee.name} + ' is saved.'"></p>
+    <button onclick="window.location.href='/addEmployee'">add new Employee</button>
+    <button onclick="window.location.href='/showAllEmployees'">Show Employee List</button>
+</body>
+</html> 

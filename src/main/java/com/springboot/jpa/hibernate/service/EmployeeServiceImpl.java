@@ -1,8 +1,13 @@
 package com.springboot.jpa.hibernate.service;
 
 import java.util.List;
+import java.util.Optional;
 
+import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.stereotype.Service;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 
 import com.springboot.jpa.hibernate.model.Employee;
 import com.springboot.jpa.hibernate.respository.IEmployeeRepository;
@@ -18,8 +23,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
 
 	@Override
 	public String saveEmployee(Employee employee) {
-		  employeeRepository.save(employee);
-		  return "Data of "+ employee.getName()+" is successfuly saved in database.";
+		employeeRepository.save(employee);
+		return "Data of " + employee.getName() + " is successfuly saved in database.";
 	}
 
 	@Override
@@ -31,8 +36,16 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	@Override
 	public Employee getEmployeeById(Long id) {
 
-		return employeeRepository.getReferenceById(id);
+		Optional<Employee> optional = employeeRepository.findById(id);
+		Employee employee = null;
+		if (optional.isPresent()) {
+			employee = optional.get();
+		} else {
+			throw new RuntimeException(" Employee not found for id :: " + id);
+		}
+		return employee;
 	}
+ 
 
 	@Override
 	public String updateEmployee(Employee employee, Long id) {
@@ -40,8 +53,8 @@ public class EmployeeServiceImpl implements IEmployeeService {
 		if (employeeRepository.existsById(id)) {
 			employee.setId(id);
 			employeeRepository.save(employee);
-			 return "Data of "+ employee.getName()+" is successfuly updated in database.";
-		 
+			return "Data of " + employee.getName() + " is successfuly updated in database.";
+
 		} else {
 			return id + " not exist";
 		}
@@ -51,13 +64,17 @@ public class EmployeeServiceImpl implements IEmployeeService {
 	@Override
 	public String deleteEmployee(Long id) {
 
-		if (employeeRepository.existsById(id)) {
-			employeeRepository.delete(employeeRepository.getReferenceById(id));
-			return "The record is deleted.";
-		} else {
-			return id + " not exist";
-		}
+//		if (employeeRepository.existsById(id)) {
+//			employeeRepository.delete(employeeRepository.getReferenceById(id));
+//			return "The record is deleted.";
+//		} else {
+//			return id + " not exist";
+//		}
 
+		Employee employee = employeeRepository.findById(id)
+				.orElseThrow(() -> new IllegalArgumentException("Invalid employee Id:" + id));
+		employeeRepository.delete(employee);
+		return "The record is deleted.";
 	}
 
 	@Override
