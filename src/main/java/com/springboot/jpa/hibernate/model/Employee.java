@@ -1,44 +1,29 @@
 package com.springboot.jpa.hibernate.model;
 
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
 @Table(name = "employees")
-//@NoArgsConstructor
-//@AllArgsConstructor
-//@Getter
-//@Setter
-//@ToString
 public class Employee {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
-
+	@NotEmpty(message = "Name cannot be empty.")
+	@Size(min = 2, max = 50)
 	private String name;
 	private String department;
 	private String role;
-	// Unidirectional
-//	@Column(name="mm_nrc_id")
-	// @PrimaryKeyJoinColumn(name = "mm_nrc_id", referencedColumnName = "id")
-	@OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-	@JoinColumn(name = "mm_nrc_id", referencedColumnName = "id")
-	private MMnrc mmNrc;
-
-	public MMnrc getMmNrc() {
-		return mmNrc;
-	}
-
-	public void setMmNrc(MMnrc mmNrc) {
-		this.mmNrc = mmNrc;
-	}
+	@NotEmpty(message = "Nrc ID cannot be empty.")
+	@Size(min = 17, max = 18)
+	@Pattern(regexp = "^([1-9]|1[0-4])/[a-zA-Z]{6}\\([n|e|p]\\)\\d{6}$", message = "Invalid format!  nrc id format should be like : 12/kamaya(n)112233")
+	private String mmNrc;
 
 	public Long getId() {
 		return id;
@@ -72,8 +57,17 @@ public class Employee {
 		this.role = role;
 	}
 
-	public Employee(String name, String department, String role, MMnrc mmNrc) {
+	public String getMmNrc() {
+		return mmNrc;
+	}
+
+	public void setMmNrc(String mmNrc) {
+		this.mmNrc = mmNrc;
+	}
+
+	public Employee(Long id, String name, String department, String role, String mmNrc) {
 		super();
+		this.id = id;
 		this.name = name;
 		this.department = department;
 		this.role = role;
@@ -81,8 +75,7 @@ public class Employee {
 	}
 
 	public Employee() {
-		super();
-		// TODO Auto-generated constructor stub
+		super(); 
 	}
 
 }

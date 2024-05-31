@@ -4,6 +4,8 @@ import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -12,18 +14,19 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.springboot.jpa.hibernate.model.Employee;
 import com.springboot.jpa.hibernate.service.IEmployeeService;
+import com.springboot.jpa.hibernate.service.IMmnrcService;
 
-import jakarta.servlet.ServletContext;
+import jakarta.validation.Valid;
 
 @Controller
 public class EmployeeController {
 
 	private final IEmployeeService employeeService;
-	private final ServletContext servletContext;
+	private final IMmnrcService mmNrcService;
 
-	public EmployeeController(IEmployeeService employeeService, ServletContext servletContext) {
+	public EmployeeController(IEmployeeService employeeService, IMmnrcService mmNrcService) {
 		this.employeeService = employeeService;
-		this.servletContext = servletContext;
+		this.mmNrcService = mmNrcService;
 	}
 
 	// display home page
@@ -33,37 +36,56 @@ public class EmployeeController {
 		return "index";
 	}
 
-	@GetMapping("/addEmployee")
+	@GetMapping("/add-employee")
 	public String showAddEmployeeForm(Model model) {
 		model.addAttribute("employee", new Employee());
 		return "addEmployee";
 	}
 
-	@GetMapping("/showAllEmployees")
+	@GetMapping("/get-all-employees")
 	public String showEmployeeList(Model model) {
 		model.addAttribute("employees", employeeService.getAllEmployees());
 		return "showAllEmployees";
 	}
 
-	@PostMapping("/addEmployee")
-	public String addEmployee(@ModelAttribute("employee") Employee employee,Model model, RedirectAttributes redirectAttributes) {
-		// save employee to database
-		employeeService.saveEmployee(employee);
- 	//redirectAttributes.addFlashAttribute("employee",employee); 
-		model.addAttribute("employee",employee);
-		return "savedPage";
+	@PostMapping("/save-employee")
+	public String addEmployee(@ModelAttribute("employee") @Valid Employee employee, BindingResult result, Model model,
+			RedirectAttributes redirectAttributes) {
+		String err = "";
+
+		if (result.hasErrors()) {
+			redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.employee", result);
+			redirectAttributes.addFlashAttribute("employee", employee);
+			return "addEmployee";
+		}
+		if (!mmNrcService.mmIdExist(employee.getMmNrc())) {
+			err = "Nrc id not exist, can't register employee. Please add new MM NRC.";
+			ObjectError error = new ObjectError("globalError", err);
+			result.addError(error);
+			model.addAttribute("errorMessage", err);
+			return "addEmployee";
+		} else {
+
+			employeeService.saveEmployee(employee);
+
+			model.addAttribute("employee", employee);
+
+			return "successfullySavedPage";
+		}
+
 	}
-	@PostMapping("/deleteEmployees")
-    public String deleteEmployees(@RequestParam("employeeIds") List<Long> employeeIds) {
-		if(employeeIds.isEmpty()) {
-			
-		}else {
-			for(Long empId : employeeIds ) {
+
+	@PostMapping("/delete-employees")
+	public String deleteEmployees(@RequestParam("employeeIds") List<Long> employeeIds) {
+		if (employeeIds.isEmpty()) {
+
+		} else {
+			for (Long empId : employeeIds) {
 				employeeService.deleteEmployee(empId);
 			}
-			
+
 		}
-        
-        return "redirect:/showAllEmployees";
-    }
+
+		return "redirect:/get-all-employees";
+	}
 }

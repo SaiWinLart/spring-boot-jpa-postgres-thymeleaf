@@ -4,50 +4,51 @@ body {
     padding: 0;
     background-color: #f0f0f0;
 }
-h2 {
-    color: #333;
-    text-align: center;
-    margin-top: 20px;
+#employeeForm {
+    width: 300px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
 }
-.form {
-    width: 80%;
-    margin: 30px auto;
-}
-.input-group {
-    margin-bottom: 10px;
-}
-.input-group label {
+label {
     display: block;
     margin-bottom: 5px;
 }
-.input-group input {
+input[type="text"] {
     width: 100%;
     padding: 10px;
-    border: 1px solid #999;
+    margin-bottom: 10px;
+    border: 1px solid #ddd;
     border-radius: 5px;
 }
-.submit-button {
-    background-color: #4CAF50;
-    color: white;
+button#checkId {
+    width: 80%;
+    padding: 8px;
+    margin-bottom: 10px;
+    background-color: #007BFF;
+    color: #fff;
+    cursor: pointer;
     border: none;
     border-radius: 5px;
-    cursor: pointer;
-    padding: 10px 20px;
 }
-.submit-button:hover {
-    background-color: #45a049;
+button#checkId:hover {
+    background-color: #0056b3;
 }
-.back-button {
-    display: block;
-    width: 100px;
-    height: 30px;
-    margin: 20px auto;
+input[type="submit"] {
+    width: 100%;
+    padding: 15px;
+    margin-bottom: 10px;
     background-color: #4CAF50;
     color: white;
+    cursor: pointer;
     border: none;
     border-radius: 5px;
-    cursor: pointer;
 }
-.back-button:hover {
+input[type="submit"]:hover {
     background-color: #45a049;
 }
+.error {
+        color: red;
+    }

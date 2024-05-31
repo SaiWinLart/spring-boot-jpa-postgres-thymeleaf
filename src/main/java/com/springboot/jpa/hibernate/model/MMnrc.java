@@ -6,26 +6,37 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 //import jakarta.persistence.Column; 
+import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 
 @Entity
-@Table(name = "myanmarnrc") 
+@Table(name = "myanmarnrc")
 public class MMnrc {
-	@Column(name = "id")
+	@Column(name = "mmId")
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
+//	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	// private Long id;
+	@NotEmpty(message = "Nrc ID cannot be empty.")
+	@Size(min = 17, max = 18)
+	@Pattern(regexp = "^([1-9]|1[0-4])/[a-zA-Z]{6}\\([n|e|p]\\)\\d{6}$", message = "Invalid format!  nrc id format should be like : 12/kamaya(n)112233")
 	private String mmId;
+	@NotEmpty(message = "Name cannot be empty.")
+	@Size(min = 2, max = 50)
 	private String name;
 	private int age;
-	private String gender;
+	@Enumerated(EnumType.ORDINAL)
+	private Gender gender;
+	@NotEmpty(message = "Father Name cannot be empty.")
 	private String fatherName;
+	@NotEmpty(message = "Mother Name cannot be empty.")
 	private String motherName;
 	private LocalDate issueDate;
+	@NotNull(message = "Date of birth cannot be null")
 	private LocalDate dateOfBirth;
 	@Enumerated(EnumType.ORDINAL)
 	private CityOfBirthPlace cityOfBirthPlace;
@@ -38,33 +49,6 @@ public class MMnrc {
 
 	public MMnrc() {
 		super();
-	}
-
-	public MMnrc(Long id, String mmId, String name, int age, String gender, String fatherName, String motherName,
-			LocalDate issueDate, LocalDate dateOfBirth, CityOfBirthPlace cityOfBirthPlace,
-			StateAndDivision stateAndDivision, String address, String occupation, BloodType bloodType) {
-		this.id = id;
-		this.mmId = mmId;
-		this.name = name;
-		this.age = age;
-		this.setGender(gender);
-		this.fatherName = fatherName;
-		this.motherName = motherName;
-		this.issueDate = issueDate;
-		this.dateOfBirth = dateOfBirth;
-		this.cityOfBirthPlace = cityOfBirthPlace;
-		this.stateAndDivision = stateAndDivision;
-		this.addressId = address;
-		this.occupation = occupation;
-		this.bloodType = bloodType;
-	}
-
-	public Long getId() {
-		return id;
-	}
-
-	public void setId(Long id) {
-		this.id = id;
 	}
 
 	public String getMmId() {
@@ -89,6 +73,14 @@ public class MMnrc {
 
 	public void setAge(int age) {
 		this.age = age;
+	}
+
+	public Gender getGender() {
+		return gender;
+	}
+
+	public void setGender(Gender gender) {
+		this.gender = gender;
 	}
 
 	public String getFatherName() {
@@ -139,6 +131,14 @@ public class MMnrc {
 		this.stateAndDivision = stateAndDivision;
 	}
 
+	public String getAddressId() {
+		return addressId;
+	}
+
+	public void setAddressId(String addressId) {
+		this.addressId = addressId;
+	}
+
 	public String getOccupation() {
 		return occupation;
 	}
@@ -155,29 +155,23 @@ public class MMnrc {
 		this.bloodType = bloodType;
 	}
 
-	public String getAddressId() {
-		return addressId;
-	}
-
-	public void setAddressId(String addressId) {
-		this.addressId = addressId;
-	}
-
-	public String getGender() {
-		return gender;
-	}
-
-	public void setGender(String gender) {
+	public MMnrc(String mmId, String name, int age, Gender gender, String fatherName, String motherName,
+			LocalDate issueDate, LocalDate dateOfBirth, CityOfBirthPlace cityOfBirthPlace,
+			StateAndDivision stateAndDivision, String addressId, String occupation, BloodType bloodType) {
+		super();
+		this.mmId = mmId;
+		this.name = name;
+		this.age = age;
 		this.gender = gender;
-	}
-
-	@Override
-	public String toString() {
-		return "MMnrc{" + "id='" + id + '\'' + ", mmId='" + mmId + '\'' + ", name='" + name + '\'' + ", age=" + age
-				+ ", fatherName='" + fatherName + '\'' + ", motherName='" + motherName + '\'' + ", issueDate="
-				+ issueDate + ", dateOfBirth=" + dateOfBirth + ", cityOfBirthPlace=" + cityOfBirthPlace
-				+ ", stateAndDivision=" + stateAndDivision + ", address=" + addressId + ", occupation='" + occupation
-				+ '\'' + ", bloodType=" + bloodType + '}';
+		this.fatherName = fatherName;
+		this.motherName = motherName;
+		this.issueDate = issueDate;
+		this.dateOfBirth = dateOfBirth;
+		this.cityOfBirthPlace = cityOfBirthPlace;
+		this.stateAndDivision = stateAndDivision;
+		this.addressId = addressId;
+		this.occupation = occupation;
+		this.bloodType = bloodType;
 	}
 
 }

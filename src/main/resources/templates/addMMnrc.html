@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>MMNRC Form</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/addMMnrc.css}" />
+</head>
+<body>
+	<form id="mmnrcForm" th:action="@{/add-mmnrc}" th:object="${mmnrc}"
+		method="post">
+		<label for="mmId">MMID:</label><br> <input type="text" id="mmId"
+			th:field="*{mmId}"><br>
+
+
+		<p th:if="${#fields.hasErrors('mmId')}" th:errorclass="error"
+			th:errors="*{mmId}" />
+
+
+
+		<label for="name">Name:</label><br> <input type="text" id="name"
+			th:field="*{name}"><br>
+
+		<p th:if="${#fields.hasErrors('name')}" th:errorclass="error"
+			th:errors="*{name}" />
+
+
+		<label for="age">Age:</label><br> <input type="number" id="age"
+			th:field="*{age}"><br> <label for="gender">Gender:</label><br>
+		<select id="gender" th:field="*{gender}">
+			<option
+				th:each="gender : ${T(com.springboot.jpa.hibernate.model.Gender).values()}"
+				th:value="${gender}" th:text="${gender}"></option>
+		</select><br> <label for="fatherName">Father's Name:</label><br> <input
+			type="text" id="fatherName" th:field="*{fatherName}"><br>
+		<p th:if="${#fields.hasErrors('fatherName')}" th:errorclass="error"
+			th:errors="*{fatherName}" />
+		<label for="motherName">Mother's Name:</label><br> <input
+			type="text" id="motherName" th:field="*{motherName}"><br>
+		<p th:if="${#fields.hasErrors('motherName')}" th:errorclass="error"
+			th:errors="*{motherName}" />
+		<label for="issueDate">Issue Date:</label><br> <input type="date"
+			id="issueDate" th:field="*{issueDate}"><br> <label
+			for="dateOfBirth">Date of Birth:</label><br> <input type="date"
+			id="dateOfBirth" th:field="*{dateOfBirth}"><br>
+		<p th:if="${#fields.hasErrors('dateOfBirth')}" th:errorclass="error"
+			th:errors="*{dateOfBirth}" />
+		<label for="cityOfBirthPlace">City of Birth Place:</label><br> <select
+			id="cityOfBirthPlace" th:field="*{cityOfBirthPlace}">
+			<option
+				th:each="city : ${T(com.springboot.jpa.hibernate.model.CityOfBirthPlace).values()}"
+				th:value="${city}" th:text="${city}"></option>
+		</select><br> <label for="stateAndDivision">State and Division:</label><br>
+		<select id="stateAndDivision" th:field="*{stateAndDivision}">
+			<option
+				th:each="state : ${T(com.springboot.jpa.hibernate.model.StateAndDivision).values()}"
+				th:value="${state}" th:text="${state}"></option>
+		</select><br> <label for="addressId">Address ID:</label><br> <input
+			type="text" id="addressId" th:field="*{addressId}"><br>
+		<label for="occupation">Occupation:</label><br> <input
+			type="text" id="occupation" th:field="*{occupation}"><br>
+		<label for="bloodType">Blood Type:</label><br> <select
+			id="bloodType" th:field="*{bloodType}">
+			<option
+				th:each="bloodType : ${T(com.springboot.jpa.hibernate.model.BloodType).values()}"
+				th:value="${bloodType}" th:text="${bloodType}"></option>
+		</select><br> <input type="submit" value="Submit">
+	</form>
+
+	<!-- <div th:if="${#fields.hasAnyErrors()}">
+		<ul>
+			<li th:each="err : ${#fields.allErrors()}" th:text="${err}" />
+		</ul>
+	</div> -->
+</body>
+</html>

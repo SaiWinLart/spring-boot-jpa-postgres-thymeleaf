@@ -30,7 +30,7 @@
 </head>
 <body>
     <h2>Employee List</h2>
-    <form action="#" th:action="@{/deleteEmployees}" method="post" onsubmit="return validateForm()">
+    <form action="#" th:action="@{/delete-employees}" method="post" onsubmit="return validateForm()">
         <table>
             <tr>
                 <th>
@@ -40,6 +40,7 @@
                 <th>Name</th>
                 <th>Department</th>
                 <th>Role</th>
+                <th>NRC ID</th>
             </tr>
             <tr th:each="employee : ${employees}">
                 <td><input type="checkbox" th:value="${employee.id}" name="employeeIds"/></td>
@@ -47,10 +48,11 @@
                 <td th:text="${employee.name}"></td>
                 <td th:text="${employee.department}"></td>
                 <td th:text="${employee.role}"></td>
+                <td th:text="${employee.mmNrc}"></td>
             </tr>
         </table>
         <button type="submit">Delete Selected Employees</button>
     </form>
-    <button onclick="window.location.href='/addEmployee'">add new Employee</button>
+    <button onclick="window.location.href='/add-employee'">add new Employee</button>
 </body>
 </html>
