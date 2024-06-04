@@ -2,6 +2,7 @@ package com.springboot.jpa.hibernate.controller;
 
 import java.util.List;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,10 +30,9 @@ public class EmployeeController {
 		this.mmNrcService = mmNrcService;
 	}
 
-	// display home page
+	 
 	@GetMapping("/")
-	public String viewHomePage(Model model) {
-		// model.addAttribute("listEmployees", employeeService.getAllEmployees());
+	public String viewHomePage(Model model) { 
 		return "index";
 	}
 
@@ -52,25 +52,33 @@ public class EmployeeController {
 	public String addEmployee(@ModelAttribute("employee") @Valid Employee employee, BindingResult result, Model model,
 			RedirectAttributes redirectAttributes) {
 		String err = "";
+		try {
 
-		if (result.hasErrors()) {
-			redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.employee", result);
-			redirectAttributes.addFlashAttribute("employee", employee);
+			if (result.hasErrors()) {
+				redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.employee", result);
+				redirectAttributes.addFlashAttribute("employee", employee);
+
+				return "addEmployee";
+			}
+			if (!mmNrcService.mmIdExist(employee.getMmNrc())) {
+				err = "Invalid Nrc id, can't register employee. Please add new MM NRC.";
+				ObjectError error = new ObjectError("globalError", err);
+				result.addError(error);
+				model.addAttribute("errorMessage", err);
+				return "addEmployee";
+			} else {
+
+				employeeService.saveEmployee(employee);
+
+				model.addAttribute("employee", employee);
+
+				return "successfullySavedPage";
+			}
+
+		} catch (DataIntegrityViolationException exception) {
+			result.rejectValue("mmNrc", "error.unique.employee",
+					"Nrc ID : " + employee.getMmNrc() + " already exists in this company.");
 			return "addEmployee";
-		}
-		if (!mmNrcService.mmIdExist(employee.getMmNrc())) {
-			err = "Nrc id not exist, can't register employee. Please add new MM NRC.";
-			ObjectError error = new ObjectError("globalError", err);
-			result.addError(error);
-			model.addAttribute("errorMessage", err);
-			return "addEmployee";
-		} else {
-
-			employeeService.saveEmployee(employee);
-
-			model.addAttribute("employee", employee);
-
-			return "successfullySavedPage";
 		}
 
 	}

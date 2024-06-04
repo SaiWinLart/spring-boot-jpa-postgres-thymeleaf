@@ -1,0 +1,83 @@
+/* Overall table styling */
+table.mmnrc-table {
+  border-collapse: collapse;
+  width: 100%;
+  font-family: Arial, sans-serif;
+  border: 1px solid #ddd;
+}
+
+/* Table header styling */
+table.mmnrc-table th {
+  padding: 10px;
+  border: 1px solid rgb(255, 255, 255);
+  background-color: rgb(32, 207, 22);
+  color: #333;
+  font-weight: bold;
+  text-align: left;
+}
+/* Body background */
+body {
+    background-color: #f0f8ea; /* Light green background */
+    font-family: Arial, sans-serif;
+    border-radius: 10px; 
+}
+/* Table body styling */
+table.mmnrc-table td {
+  padding: 10px;
+  border: 1px solid #ddd;
+}
+
+/* Zebra striping for alternate row colors */
+table.mmnrc-table tbody tr:nth-child(even) {
+  background-color: #f8f8f8;
+}
+
+/* Checkbox column styling */
+.checkbox-column {
+  text-align: center;
+}
+
+.checkbox-column input[type="checkbox"] {
+  margin: 0 auto;
+}
+
+/* Action column styling */
+.action-column {
+  text-align: center;
+}
+
+.action-column button {
+  background-color: #e74c3c; /* Red for delete button */
+  color: white;
+  padding: 5px 10px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.action-column button:hover {
+  background-color: #c0392b; /* Darker red on hover */
+}
+
+/* Select All checkbox container */
+.select-all-container {
+  margin-bottom: 10px;
+}
+
+.select-all-container label {
+  margin-right: 10px;
+}
+button {
+    display: block;
+    width: 100px;
+    height: 30px;
+    margin: 20px auto;
+    background-color: #4CAF50;
+    color: white;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+}
+button:hover {
+    background-color: rgb(0, 128, 255);
+}

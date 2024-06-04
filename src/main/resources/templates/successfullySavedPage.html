@@ -2,12 +2,16 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title>Employee Saved</title>
-    <link rel="stylesheet" type="text/css" href="/css/styles.css">
+    <link rel="stylesheet" type="text/css"
+	th:href="@{/css/employeeDetails.css}" />
 </head>
 <body>
-    <h2>Success!</h2>
+<div class="details-container">
+<h2>Success!</h2>
     <p th:text="'Employee ' + ${employee.name} + ' is saved.'"></p>
     <button onclick="window.location.href='/add-employee'">add new Employee</button>
     <button onclick="window.location.href='/get-all-employees'">Show Employee List</button>
+</div>
+     
 </body>
 </html> 

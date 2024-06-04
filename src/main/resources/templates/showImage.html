@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>MMNRC Form</title>
+    <link rel="stylesheet" type="text/css" th:href="@{/css/showImage.css}" />
+</head>
+<body>
+    <div class="form-container">
+        <form th:action="@{/get-image}" th:object="${image}" method="get">
+            <label for="mmId">MMID:</label><br>
+            <input type="text" id="mmId" th:field="*{mmId}"><br>
+            <p th:if="${#fields.hasErrors('mmId')}" th:errorclass="error" th:errors="*{mmId}"></p>
+            <p th:if="${error}" th:text="${error}" class="error"></p> <!-- Display error if no image is found -->
+            <input type="submit" value="Submit">
+        </form>
+    </div>
+    <div class="image-container">
+        <img th:if="${imageSrc}" th:src="${imageSrc}" alt="Image not available"/> <!-- Show image only if imageSrc is present -->
+    </div>
+</body>
+</html>

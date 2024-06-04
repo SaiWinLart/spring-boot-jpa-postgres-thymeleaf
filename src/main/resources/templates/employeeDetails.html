@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>MM Nrc Details</title>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/css/employeeDetails.css}" />
+</head>
+<body>
+	<h1>MM Nrc Details</h1>
+	<!-- <div class="flex-container"> -->
+	<div class="grid-container">
+		<div class="details-container">
+			<p>
+				<b>MM Nrc ID:</b> <span th:text="${mmnrc.mmId}"></span>
+			</p>
+			<p>
+				<b>Name:</b> <span th:text="${mmnrc.name}"></span>
+			</p>
+			<p>
+				<b>Age:</b> <span th:text="${mmnrc.age == 0 ? 'NA'  : mmnrc.age }"></span>
+			</p>
+			<p>
+				<b>Gender:</b> <span th:text="${mmnrc.gender}"></span>
+			</p>
+			<p>
+				<b>Father's Name:</b> <span th:text="${mmnrc.fatherName}"></span>
+			</p>
+			<p>
+				<b>Mother's Name:</b> <span th:text="${mmnrc.motherName}"></span>
+			</p>
+			<p>
+				<b>Date of Birth:</b> <span th:text="${mmnrc.dateOfBirth}"></span>
+			</p>
+			<p>
+				<b>City of Birth:</b> <span th:text="${mmnrc.cityOfBirthPlace}"></span>
+			</p>
+			<p>
+				<b>State/Division:</b> <span th:text="${mmnrc.stateAndDivision}"></span>
+			</p>
+			<p>
+				<b>Occupation:</b> <span th:text="${mmnrc.occupation != null && mmnrc.occupation != '' ? mmnrc.occupation : 'NA'}"></span>
+			</p>
+			<p>
+				<b>Blood Type:</b> <span th:text="${mmnrc.bloodType}"></span>
+			</p>
+			
+			<p>
+				<b>Address:</b> <span th:text="${mmnrc.addressId != null && mmnrc.addressId != '' ? mmnrc.addressId : 'NA'}"></span>
+			</p>
+		</div>
+
+		<div class="details-container">
+			<p>
+				<b>MM Nrc ID:</b> <span th:text="${employee.mmNrc}"></span>
+			</p>
+			<p>
+				<b>Name:</b> <span th:text="${employee.name}"></span>
+			</p>
+			<p>
+				<b>Department:</b> <span th:text="${employee.department}"></span>
+			</p>
+			<p>
+				<b>Role:</b> <span th:text="${employee.role}"></span>
+			</p>
+			<!-- Add other employee details here -->
+		</div>
+	</div>
+</body>
+</html>

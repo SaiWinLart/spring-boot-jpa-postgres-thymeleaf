@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>MMnrc Management System - List of MMnrc</title>
+<link rel="stylesheet" th:href="@{/css/MMnrcList.css}" />
+<link rel="stylesheet" type="text/css" href="/css/MMnrcList.css">
+<script src="/js/MMnrcList.js" defer></script>
+<script th:src="@{/js/MMnrcList.js}" type="text/javascript"></script>
+</head>
+<body> 
+	<div class="container">
+		<div class="delete-selected-container">
+			<h1>MMnrc Management System</h1>
+			<h2>List of MMnrc</h2>
+			<form action="#" th:action="@{/delete-mmnrcs}" method="post"
+				onsubmit="return validateForm()">
+				<table class="mmnrc-table">
+					<thead>
+						<tr>
+							<th class="checkbox-column"><input type="checkbox"
+								th:name="selectAllRows" onClick="selectAllCheckboxes(this)" />
+								Select All/De-Select All</th>
+							<th>MM ID</th>
+							<th>Name</th>
+							<th>Age</th>
+							<th>Gender</th>
+							<th>Father Name</th>
+							<th>Mother Name</th>
+							<th>Issue Date</th>
+							<th>Date of Birth</th>
+							<th>City of Birth</th>
+							<th>State/Division</th>
+							<th>Address ID</th>
+							<th>Occupation</th>
+							<th>Blood Type</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="mmnrc : ${mmnrcList}">
+							<td class="checkbox-column"><input type="checkbox"
+								th:name="mmnrcIds" th:value="${mmnrc.mmId}" /></td>
+							<td th:text="${mmnrc.mmId}"></td>
+							<td th:text="${mmnrc.name}"></td>
+							<td th:text="${mmnrc.age == 0 ? 'NA'  : mmnrc.age }" ></td>
+							<td th:text="${mmnrc.gender}"></td>
+							<td th:text="${mmnrc.fatherName}"></td>
+							<td th:text="${mmnrc.motherName}"></td>
+							<td th:text="${mmnrc.issueDate} ?:'NA'"></td>
+							<td th:text="${mmnrc.dateOfBirth}"></td>
+							<td th:text="${mmnrc.cityOfBirthPlace}"></td>
+							<td th:text="${mmnrc.stateAndDivision}"></td>
+							<td
+								th:text="${mmnrc.addressId != null && mmnrc.addressId != '' ? mmnrc.addressId : 'NA'}"></td>
+							<td
+								th:text="${mmnrc.occupation != null && mmnrc.occupation != '' ? mmnrc.occupation : 'NA'}"></td>
+							<td th:text="${mmnrc.bloodType}"></td>
+						</tr>
+					</tbody>
+				</table>
+				<button type="submit">Delete Selected MM Nrc</button>
+			</form>
+		</div>
+	</div>
+</body>
+</html>

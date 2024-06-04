@@ -5,32 +5,34 @@
 <link rel="stylesheet" type="text/css" href="/css/addEmployeeStyle.css">
 </head>
 <body>
-	<form id="employeeForm" th:action="@{/save-employee}"
-		th:object="${employee}" method="post">
-		<label for="name">Name:</label><br> <input type="text" id="name"
-			th:field="*{name}"><br>
-		<p th:if="${#fields.hasErrors('name')}" th:errorclass="error"
-			th:errors="*{name}" />
-		<label for="department">Department:</label><br> <input
-			type="text" id="department" th:field="*{department}"><br>
-		<label for="role">Role:</label><br> <input type="text" id="role"
-			th:field="*{role}"><br> <label for="mmNrc">MMNRC
-			ID:</label><br> <input type="text" id="mmNrc" th:field="*{mmNrc}"><br>
-		<p th:if="${#fields.hasErrors('mmNrc')}" th:errorclass="error"
-			th:errors="*{mmNrc}" />
-
-		<button type="button" id="checkId">Check ID</button>
-		<br> <input type="submit" value="Submit">
-	</form>
-	<button onclick="window.location.href='/add-mmnrc'">Add new MM
-		Nrc</button>
-
-	<!--  <div th:if="${#fields.hasErrors('globalError')}">
+	<div>
+		<form id="employeeForm" th:action="@{/save-employee}"
+			th:object="${employee}" method="post">
+			<label for="name">Name:</label><br> <input type="text" id="name"
+				th:field="*{name}"><br>
+			<p th:if="${#fields.hasErrors('name')}" th:errorclass="error"
+				th:errors="*{name}" />
+			<label for="department">Department:</label><br> <input
+				type="text" id="department" th:field="*{department}"><br>
+			<label for="role">Role:</label><br> <input type="text" id="role"
+				th:field="*{role}"><br> <label for="mmNrc">MMNRC
+				ID:</label><br> <input type="text" id="mmNrc" th:field="*{mmNrc}"><br>
+			<p th:if="${#fields.hasErrors('mmNrc')}" th:errorclass="error"
+				th:errors="*{mmNrc}" />
+			<button type="button" id="checkId">Check ID</button>
+			<input type="submit" value="Submit">
+		</form>
+	</div>
+	<div>
+		<button onclick="window.location.href='/add-mmnrc'" id="addNewMMnrc">Add
+			new MMNrc</button>
+		<!--  <div th:if="${#fields.hasErrors('globalError')}">
 		<h3>Global errors:</h3>
 		<p th:each="err : ${#fields.errors('globalError')}" th:text="${err}"
 			class="error" />
 	</div>  -->
-<span th:if="${errorMessage}" th:text="${errorMessage}" class="error">Error</span>
+		<span th:if="${errorMessage}" th:text="${errorMessage}" class="error">Error</span>
+	</div>
 	<script>
         document.getElementById("checkId").addEventListener("click", function(){
             var mmId = document.getElementById("mmNrc").value;
@@ -42,9 +44,9 @@
             .then(response => response.json())
             .then(data => {
                 if(data.exists) {
-                    alert("ID exists");
+                    alert("Valid MM Nrc ID.");
                 } else {
-                    alert("ID does not exist");
+                    alert("Invalid MM Nrc ID.");
                 }
             });
         });

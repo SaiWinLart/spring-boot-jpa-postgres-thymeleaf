@@ -1,5 +1,7 @@
 package com.springboot.jpa.hibernate.controller;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,9 +15,13 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.springboot.jpa.hibernate.model.Employee;
+import com.springboot.jpa.hibernate.model.Image;
 import com.springboot.jpa.hibernate.model.MMnrc;
+import com.springboot.jpa.hibernate.service.IEmployeeService;
 import com.springboot.jpa.hibernate.service.IMmnrcService;
 
 import jakarta.validation.Valid;
@@ -24,9 +30,11 @@ import jakarta.validation.Valid;
 public class MMnrcController {
 
 	private final IMmnrcService mmNrcService; // Use MmnrcService interface
+	private final IEmployeeService employeeService;
 
-	public MMnrcController(IMmnrcService mmnrcService) {
+	public MMnrcController(IMmnrcService mmnrcService, IEmployeeService employeeService) {
 		this.mmNrcService = mmnrcService;
+		this.employeeService = employeeService;
 	}
 
 	@GetMapping("/mmnrcList")
@@ -52,16 +60,16 @@ public class MMnrcController {
 		} else {
 
 			mmNrcService.saveMMnrc(mmnrc);
-			return "redirect:/get-all-employees";
+			return "redirect:/get-all-mmnrcs";
 		}
 
 	}
 
-	@GetMapping("/show-all-mmnrcs")
+	@GetMapping("/get-all-mmnrcs")
 	public String showMmnrcList(Model model) {
 		List<MMnrc> mmnrcs = mmNrcService.getAllMMnrcs();
-		model.addAttribute("mmnrcs", mmnrcs);
-		return "showAllMmnrcs";
+		model.addAttribute("mmnrcList", mmnrcs);
+		return "showAllMmnrc";
 	}
 
 	@PostMapping("/delete-mmnrcs")
@@ -75,7 +83,7 @@ public class MMnrcController {
 			}
 		}
 
-		return "redirect:/show-all-mmnrcs";
+		return "redirect:/get-all-mmnrcs";
 	}
 
 	@GetMapping("/checkId/{mmid}")
@@ -86,6 +94,66 @@ public class MMnrcController {
 		Map<String, Boolean> response = new HashMap<>();
 		response.put("exists", exists);
 		return ResponseEntity.ok(response);
+	}
+
+	@GetMapping("/employee-details/{employeeId}")
+	public String getMMnrcByEmployeeId(@PathVariable Long employeeId, Model model) {
+
+		Employee employee = employeeService.getEmployeeById(employeeId);
+		MMnrc mmnrc = mmNrcService.getMMnrcByMMid(employee.getMmNrc());
+		model.addAttribute("mmnrc", mmnrc);
+		model.addAttribute("employee", employee);
+		return "employeeDetails";
+	}
+
+	@GetMapping("/upload-image")
+	public String showUploadForm(Model model) {
+		model.addAttribute("image", new Image());
+		return "uploadImage";
+	}
+
+	@PostMapping("/upload-image")
+	public String uploadImage(@RequestParam("file") MultipartFile file, Image image, Model model,
+			RedirectAttributes redirectAttributes) {
+		try {
+
+			mmNrcService.saveImage(file, image.getMmId());
+			model.addAttribute("image", image);
+			redirectAttributes.addFlashAttribute("message", "Image uploaded successfully!");
+		} catch (IOException e) {
+			e.printStackTrace();
+			redirectAttributes.addFlashAttribute("message", "Upload failed!");
+		}
+		return "redirect:/upload-image";
+	}
+	@GetMapping("/show-image")
+	public String showSearchImageForm(Model model) {
+		model.addAttribute("image", new Image());
+		return "showImage";
+	}
+	@GetMapping("/get-image")
+	public String showImage(@RequestParam String mmId, Model model) {
+		try {
+			Image image = mmNrcService.getMMnrcImageByMMid(mmId);
+			if (image != null) {
+				String base64Encoded = Base64.getEncoder().encodeToString(image.getImageData());
+				model.addAttribute("imageSrc", "data:image/jpeg;base64," + base64Encoded);
+				model.addAttribute("image", image);
+				return "showImage";
+			} else {
+				// If no image is found, add an attribute to display an error message
+				model.addAttribute("error", "No image matches this ID: " + mmId);
+
+				model.addAttribute("image", new Image());
+				return "showImage";
+			}
+		} catch (Exception e) {
+			// Log the exception details for debugging
+			e.printStackTrace();
+			// Add a generic error message attribute to the model
+			model.addAttribute("error", "An error occurred while retrieving the image.");
+			return "showImage";
+		}
 	}
 
 }

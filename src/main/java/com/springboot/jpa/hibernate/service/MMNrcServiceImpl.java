@@ -1,10 +1,14 @@
 package com.springboot.jpa.hibernate.service;
 
+import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.stereotype.Service;
+import org.springframework.web.multipart.MultipartFile;
 import org.thymeleaf.util.StringUtils;
 
+import com.springboot.jpa.hibernate.model.Image;
 import com.springboot.jpa.hibernate.model.MMnrc;
 import com.springboot.jpa.hibernate.respository.INrcRepository;
 
@@ -22,18 +26,6 @@ public class MMNrcServiceImpl implements IMmnrcService {
 		nrcRepository.save(MMnrc);
 		return "Data of : " + MMnrc.getName() + " succefully save in database.";
 	}
-
-//	@Override
-//	public MMnrc getMMnrcById(String id) {
-//
-//		MMnrc MMnrcData = nrcRepository.getMMnrcByMMid(id)
-//
-//		if (MMnrcData != null) {
-//			return MMnrcData;
-//		} else {
-//			return null;
-//		}
-//	}
 
 	@Override
 	public List<MMnrc> getAllMMnrcs() {
@@ -91,4 +83,30 @@ public class MMNrcServiceImpl implements IMmnrcService {
 		return nrcRepository.mmIdExist(mmnrcId);
 	}
 
+	@Override
+	public void saveImage(MultipartFile imageFile, String mmId) throws IOException {
+		Image image = new Image();
+		image.setFileName(imageFile.getOriginalFilename());
+		image.setContentType(imageFile.getContentType());
+		image.setImageData(imageFile.getBytes());
+		image.setMmId(mmId);
+		nrcRepository.save(image);
+	}
+
+	@Override
+	public Image getMMnrcImageByMMid(String mmnrcId) {
+
+		if (StringUtils.isEmptyOrWhitespace(mmnrcId)) {
+			// throw new IllegalArgumentException("Name cannot be null or blank");
+			return null;
+		} else {
+			Optional<Image> mmNrcImage = nrcRepository.getMMnrcImageByMMid(mmnrcId);
+			if (mmNrcImage.isPresent()) {
+				return nrcRepository.getMMnrcImageByMMid(mmnrcId).get();
+			}
+		}
+
+		return null;
+
+	}
 }

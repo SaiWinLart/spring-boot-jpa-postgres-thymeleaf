@@ -1,16 +1,17 @@
+ 
+/* Body background */
 body {
-	font-family: Arial, sans-serif;
-	margin: 0;
-	padding: 0;
-	background-color: #f0f0f0;
+    background-color: #f0f8ea; /* Light green background */
+    font-family: Arial, sans-serif;
+    border-radius: 10px; 
 }
-
 #mmnrcForm {
 	width: 60%;
 	margin: 50px auto;
 	padding: 20px;
 	background-color: #fff;
 	box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+	border-radius: 10px; 
 }
 
 #mmnrcForm label {

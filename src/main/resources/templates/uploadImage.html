@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<title>Image Upload</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/uploadImage.css}" />
+</head>
+<body>
+	<header>
+		<h1>Upload MM Nrc Image</h1>
+	</header>
+	<div class="container">
+		<form th:action="@{/upload-image}" th:object="${image}" method="post"
+			enctype="multipart/form-data">
+			<label for="file">Select image to upload:</label> <input type="file"
+				id="file" name="file" /> <label for="mmId">MMID:</label><br> <input
+				type="text" id="mmId" th:field="*{mmId}"><br>
+			<p th:if="${#fields.hasErrors('mmId')}" th:errorclass="error"
+				th:errors="*{mmId}" />
+			<p>
+				<span th:text="${message}"></span>
+			</p>
+			<button type="submit">Upload</button>
+		</form>
+	</div>
+</body>
+</html>

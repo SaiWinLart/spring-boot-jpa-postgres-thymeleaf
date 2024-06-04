@@ -1,0 +1,66 @@
+body {
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f4;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+}
+
+.form-container {
+    background-color: #fff;
+    padding: 2em;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    margin-bottom: 2em; /* Add space between form and image */
+}
+
+label {
+    display: block;
+    margin-bottom: .5em;
+    color: #333333;
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: .5em;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-bottom: 1em;
+}
+
+input[type="submit"] {
+    width: 100%;
+    padding: .5em;
+    border: none;
+    border-radius: 4px;
+    background-color: #5cb85c;
+    color: white;
+    cursor: pointer;
+}
+
+input[type="submit"]:hover {
+    background-color: #4cae4c;
+}
+
+.error {
+    color: #D8000C;
+    background-color: #FFD2D2;
+    padding: 10px;
+    margin: 10px 0;
+    border: 1px solid #D8000C;
+    border-radius: 5px;
+}
+
+.image-container {
+    text-align: center; /* Center the image */
+}
+
+img {
+    max-width: 50%;
+    height: auto;
+    border-radius: 10px; /* Optional: adds rounded corners to the image */
+}

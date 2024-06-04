@@ -1,17 +1,20 @@
+/* Body background */
 body {
+    background-color: #f0f8ea; /* Light green background */
     font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 0;
-    background-color: #f0f0f0;
 }
-#employeeForm {
-    width: 300px;
-    margin: 0 auto;
+
+/* Container for details */
+#employeeForm  {
+	width: 500px;
+    background-color: #ffffff; /* White background */
     padding: 20px;
-    background-color: #fff;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    border-radius: 6px;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+    align-content: center;
+    margin: 0 auto;
 }
+ 
 label {
     display: block;
     margin-bottom: 5px;
@@ -21,18 +24,35 @@ input[type="text"] {
     padding: 10px;
     margin-bottom: 10px;
     border: 1px solid #ddd;
-    border-radius: 5px;
+    border-radius: 6px;
 }
 button#checkId {
-    width: 80%;
+    width: 100%;
     padding: 8px;
     margin-bottom: 10px;
     background-color: #007BFF;
     color: #fff;
     cursor: pointer;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
 }
+
+button#addNewMMnrc {
+	
+   width: 50%; 
+    padding: 10px;
+     margin-left :330px;
+     margin-right :330px;
+     margin-top :20px;
+   
+    background-color: rgb(128, 255, 128) ;
+    color: #fff;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px; 
+    display: inline-block;
+}
+
 button#checkId:hover {
     background-color: #0056b3;
 }
@@ -44,7 +64,7 @@ input[type="submit"] {
     color: white;
     cursor: pointer;
     border: none;
-    border-radius: 5px;
+    border-radius: 6px;
 }
 input[type="submit"]:hover {
     background-color: #45a049;

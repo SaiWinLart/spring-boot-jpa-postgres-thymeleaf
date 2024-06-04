@@ -9,20 +9,12 @@
 		method="post">
 		<label for="mmId">MMID:</label><br> <input type="text" id="mmId"
 			th:field="*{mmId}"><br>
-
-
 		<p th:if="${#fields.hasErrors('mmId')}" th:errorclass="error"
 			th:errors="*{mmId}" />
-
-
-
 		<label for="name">Name:</label><br> <input type="text" id="name"
 			th:field="*{name}"><br>
-
 		<p th:if="${#fields.hasErrors('name')}" th:errorclass="error"
 			th:errors="*{name}" />
-
-
 		<label for="age">Age:</label><br> <input type="number" id="age"
 			th:field="*{age}"><br> <label for="gender">Gender:</label><br>
 		<select id="gender" th:field="*{gender}">
@@ -64,11 +56,5 @@
 				th:value="${bloodType}" th:text="${bloodType}"></option>
 		</select><br> <input type="submit" value="Submit">
 	</form>
-
-	<!-- <div th:if="${#fields.hasAnyErrors()}">
-		<ul>
-			<li th:each="err : ${#fields.allErrors()}" th:text="${err}" />
-		</ul>
-	</div> -->
 </body>
 </html>

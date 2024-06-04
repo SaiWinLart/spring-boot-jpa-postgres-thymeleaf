@@ -1,58 +1,79 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Employee List</title>
-    <link rel="stylesheet" type="text/css" href="/css/styles.css">
-    <script>
-        function selectAllCheckboxes(source) {
-            checkboxes = document.getElementsByName('employeeIds');
-            for(var i=0, n=checkboxes.length;i<n;i++) {
-                checkboxes[i].checked = source.checked;
-            }
-        }
+<title>Employee List</title>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/css/employeeList.css}" />
+<script>
+	function selectAllCheckboxes(source) {
+		checkboxes = document.getElementsByName('employeeIds');
+		for (var i = 0, n = checkboxes.length; i < n; i++) {
+			checkboxes[i].checked = source.checked;
+		}
+	}
 
-        function validateForm() {
-            var checkboxes = document.getElementsByName('employeeIds');
-            var isChecked = false;
-            for (var i = 0; i < checkboxes.length; i++) {
-                if (checkboxes[i].checked) {
-                    isChecked = true;
-                    break;
-                }
-            }
-            if (!isChecked) {
-                alert('Please select at least one employee to delete.');
-                return false;
-            }
-            return true;
-        }
-    </script>
+	function validateForm() {
+		var checkboxes = document.getElementsByName('employeeIds');
+		var isChecked = false;
+		for (var i = 0; i < checkboxes.length; i++) {
+			if (checkboxes[i].checked) {
+				isChecked = true;
+				break;
+			}
+		}
+		if (!isChecked) {
+			alert('Please select at least one employee to delete.');
+			return false;
+		}
+		return true;
+	}
+
+	function deleteSelectedEmployees() {
+		if (validateForm()) {
+			document.getElementById('employeeForm').submit();
+		}
+	}
+</script>
 </head>
-<body>
-    <h2>Employee List</h2>
-    <form action="#" th:action="@{/delete-employees}" method="post" onsubmit="return validateForm()">
-        <table>
-            <tr>
-                <th>
-                    <input type="checkbox" onClick="selectAllCheckboxes(this)" /> Select All/De-Select All
-                </th>
-                <th>ID</th>
-                <th>Name</th>
-                <th>Department</th>
-                <th>Role</th>
-                <th>NRC ID</th>
-            </tr>
-            <tr th:each="employee : ${employees}">
-                <td><input type="checkbox" th:value="${employee.id}" name="employeeIds"/></td>
-                <td th:text="${employee.id}"></td>
-                <td th:text="${employee.name}"></td>
-                <td th:text="${employee.department}"></td>
-                <td th:text="${employee.role}"></td>
-                <td th:text="${employee.mmNrc}"></td>
-            </tr>
-        </table>
-        <button type="submit">Delete Selected Employees</button>
-    </form>
-    <button onclick="window.location.href='/add-employee'">add new Employee</button>
+<body class="container">
+	<h2>Employee List</h2>
+	<form action="#" th:action="@{/delete-employees}" method="post"
+		id="employeeForm" onsubmit="return validateForm()">
+		<table>
+			<tr>
+				<th><input type="checkbox" onClick="selectAllCheckboxes(this)" />
+					Select All/De-Select All</th>
+
+				<th>Name</th>
+				<th>Department</th>
+				<th>Role</th>
+				<th>NRC ID</th>
+			</tr>
+			<tr th:each="employee : ${employees}">
+				<td><input type="checkbox" th:value="${employee.id}"
+					name="employeeIds" /></td>
+
+				<td th:text="${employee.name}"></td>
+				<td
+					th:text="${employee.department != null && employee.department != '' ? employee.department : 'NA'}"></td>
+				<td
+					th:text="${employee.role != null && employee.role != '' ? employee.role : 'NA'}"></td>
+
+				<td><a th:href="@{'/employee-details/' + ${employee.id}}"
+					th:text="${employee.mmNrc}"></a></td>
+			</tr>
+
+		</table> 
+	</form>
+	<table style="border-collapse: collapse;">
+		<tr >
+			<td id="button"><button onclick="deleteSelectedEmployees()">Delete
+					Selected Employees</button></td>
+
+			<td id="button"><button
+					onclick="window.location.href='/add-employee'">add new
+					Employee</button></td>
+		</tr>
+	</table>
 </body>
 </html>

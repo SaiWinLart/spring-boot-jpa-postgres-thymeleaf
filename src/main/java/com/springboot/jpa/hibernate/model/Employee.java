@@ -1,16 +1,18 @@
 package com.springboot.jpa.hibernate.model;
 
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
-@Entity
-@Table(name = "employees")
+@Entity 
+@Table(name = "employees" ,uniqueConstraints = @UniqueConstraint(columnNames = {"mm_id"}))
 public class Employee {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -23,6 +25,7 @@ public class Employee {
 	@NotEmpty(message = "Nrc ID cannot be empty.")
 	@Size(min = 17, max = 18)
 	@Pattern(regexp = "^([1-9]|1[0-4])/[a-zA-Z]{6}\\([n|e|p]\\)\\d{6}$", message = "Invalid format!  nrc id format should be like : 12/kamaya(n)112233")
+	//@Column(unique = true )
 	private String mmNrc;
 
 	public Long getId() {

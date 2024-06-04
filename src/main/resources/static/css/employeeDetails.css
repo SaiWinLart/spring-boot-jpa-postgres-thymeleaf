@@ -1,0 +1,77 @@
+/* employeeDetails.css */
+
+/* Body background */
+body {
+    background-color: #f0f8ea; /* Light green background */
+    font-family: Arial, sans-serif;
+}
+
+/* Container for details */
+.details-container {
+    background-color: #ffffff; /* White background */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+/* Heading style */
+h1 {
+    color: #228b22; /* Dark green heading color */
+    font-size: 24px;
+    margin-bottom: 20px;
+}
+
+/* Paragraph text style */
+p {
+    color: #333; /* Dark gray text color */
+    font-size: 16px;
+    margin-bottom: 10px;
+    text-align: left; /* Align text to the left */
+}
+span {
+    color: #20cf16; /*  */
+    font-size: 16px;
+    margin-bottom: 10px;
+    margin-left: 20px;
+    text-align: right;
+}
+/* Links (if any) */
+a {
+    color: #228b22; /* Dark green link color */
+    text-decoration: none;
+    transition: color 0.3s;
+}
+
+a:hover {
+    color: #2e8b57; /* Lighter green on hover */
+}
+
+/* Create a flex container */
+.flex-container {
+    display: flex;
+    /* Other styles as needed */
+}
+/* Create a grid container */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two equal columns */
+    /* Other styles as needed */
+}
+button {
+	
+    width: 40%;
+    padding: 10px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    margin-left : 25%;
+    background-color:  #2e8b57;
+    color: #fff;
+    cursor: pointer;
+    border: none;
+    border-radius: 6px; 
+    display: inline-block;
+}
+
+button#checkId:hover {
+    background-color: #0056b3;
+}
