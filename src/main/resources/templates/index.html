@@ -1,15 +1,23 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
-    <title>Welcome Page</title>
+<title>Welcome Page</title>
 </head>
 <body>
-    <h1>Welcome!</h1>
-    <a th:href="@{/add-employee}">Add New Employee</a><br/>
-    <a th:href="@{/upload-image}">Upload Image</a><br/>
-    <a th:href="@{/show-image}">View Image</a><br/>
-    <a th:href="@{/get-all-employees}">Show Employee List</a><br/>
-    <a th:href="@{/get-all-mmnrcs}">Show MM Nrc List</a><br/>
-    <a href="javascript:history.back()">Go Back</a>
+	 
+	<a th:href="@{/admin/add-employee}">Add New Employee</a>
+	<br />
+	<a th:href="@{/upload-image}">Upload Image</a>
+	<br />
+	<a th:href="@{/show-image}">View Image</a>
+	<br />
+	<a th:href="@{/get-all-employees}">Show Employee List</a>
+	<br />
+	<a th:href="@{/get-all-mmnrcs}">Show MM Nrc List</a>
+	<br />
+	<form th:action="@{/logout}" method="post">
+		<input type="submit" value="Sign Out" />
+	</form>
+
 </body>
 </html>

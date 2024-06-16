@@ -31,12 +31,12 @@ public class EmployeeController {
 	}
 
 	 
-	@GetMapping("/")
+	@GetMapping("/home")
 	public String viewHomePage(Model model) { 
 		return "index";
 	}
 
-	@GetMapping("/add-employee")
+	@GetMapping("/admin/add-employee")
 	public String showAddEmployeeForm(Model model) {
 		model.addAttribute("employee", new Employee());
 		return "addEmployee";

@@ -36,13 +36,7 @@ public class MMnrcController {
 		this.mmNrcService = mmnrcService;
 		this.employeeService = employeeService;
 	}
-
-	@GetMapping("/mmnrcList")
-	public String viewHomePage(Model model) {
-
-		return "index";
-	}
-
+ 
 	@GetMapping("/add-mmnrc")
 	public String showAddMmnrcForm(Model model) {
 		model.addAttribute("mmnrc", new MMnrc());
