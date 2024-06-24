@@ -9,11 +9,13 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.security.web.SecurityFilterChain; 
+import org.springframework.security.web.SecurityFilterChain;
+import org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect;
 
 @Configuration
 @EnableWebSecurity
 public class SecurityConfig {
+//	
 //	@Bean
 //	public UserDetailsService userDetailsService() {
 //		InMemoryUserDetailsManager manager = new InMemoryUserDetailsManager();
@@ -22,6 +24,18 @@ public class SecurityConfig {
 //		manager.createUser(User.withUsername("user").password(encodedPassword).roles("USER").build());
 //		return manager;
 //	}
+//	 
+	private final UserDetailsService userDetailsService;
+
+	public SecurityConfig(UserDetailsService userDetailsService) {
+		this.userDetailsService = userDetailsService;
+	}
+
+	@Bean
+	public UserDetailsService userDetailsService() {
+		return userDetailsService;
+	}
+
 //
 //	@Bean
 //	public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
@@ -43,15 +57,17 @@ public class SecurityConfig {
 //} 
 
 //for MVC
-	// https://www.youtube.com/watch?v=9J-b6OlPy24&ab_channel=GenuineCoder
+	//
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
 		return httpSecurity.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(registry -> {
 			registry.requestMatchers("/").permitAll();
+			registry.requestMatchers("/user/**").hasRole("USER");
+			registry.requestMatchers("/admin/**").hasRole("ADMIN");
 			registry.anyRequest().authenticated();
 		}).formLogin(httpSecurityFormLoginConfigurer -> {
-			httpSecurityFormLoginConfigurer.loginPage("/login").permitAll();
-
+			httpSecurityFormLoginConfigurer.loginPage("/login").successHandler(new AuthenticationSuccessHandler())
+					.permitAll();
 		}).build();
 	}
 //	private   PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
@@ -61,30 +77,25 @@ public class SecurityConfig {
 //	  // Configure a DaoAuthenticationProvider
 //	  DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
 //	  authenticationProvider.setUserDetailsService(userDetailsService);
-//	  authenticationProvider.setPasswordEncoder(passwordEncoder);
+//	  authenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
 //	  ProviderManager providerManager = new ProviderManager(Collections.singletonList(authenticationProvider));
 //
 //	  return providerManager;
 //	    
 //	}
 
-
-	private final UserDetailsService userDetailsService;
-
-	public SecurityConfig(UserDetailsService userDetailsService) {
-		this.userDetailsService = userDetailsService;
-	}
-
 	@Bean
 	public AuthenticationProvider authProvider() {
 		DaoAuthenticationProvider authenticationProvider = new DaoAuthenticationProvider();
-		// System.out.println("...AuthenticationManager..."+passwordEncoder);
 		authenticationProvider.setUserDetailsService(userDetailsService);
 		authenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
 		// authenticationProvider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
-		System.out.println(".authProvider..AuthenticationManager...");
+		System.out.println(".................authProvider..AuthenticationManager...");
 		return authenticationProvider;
 	}
-	 
+	@Bean
+	public SpringSecurityDialect springSecurityDialect() {
+	    return new SpringSecurityDialect();
+	}
 
 }

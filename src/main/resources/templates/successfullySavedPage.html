@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Employee Saved</title>
-    <link rel="stylesheet" type="text/css"
+<title>Employee Saved</title>
+<link rel="stylesheet" type="text/css"
 	th:href="@{/css/employeeDetails.css}" />
 </head>
 <body>
-<div class="details-container">
-<h2>Success!</h2>
-    <p th:text="'Employee ' + ${employee.name} + ' is saved.'"></p>
-    <button onclick="window.location.href='/add-employee'">add new Employee</button>
-    <button onclick="window.location.href='/get-all-employees'">Show Employee List</button>
-</div>
-     
+	<div th:include="~{'/header.html'}"></div>
+	<div class="details-container">
+		<h2>Success!</h2>
+		<p th:text="'Employee ' + ${employee.name} + ' is saved.'"></p>
+		<button onclick="window.location.href='/add-employee'">add
+			new Employee</button>
+		<button onclick="window.location.href='/get-all-employees'">Show
+			Employee List</button>
+		<button onclick="window.location.href='/home'">Home</button>
+	</div>
+
 </body>
-</html> 
+</html>

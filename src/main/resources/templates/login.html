@@ -76,10 +76,8 @@ body {
 	<div class="login-container">
 		<h2>Login</h2>
 		<div th:if="${param.error}">
-			<p class="alert alert-danger" role="alert">Invalid username or
-				password.</p>
+			<p class="alert alert-danger" role="alert" th:text="${errorMessage}"></p>
 		</div>
-
 		<form th:action="@{/login}" method="post">
 			<div class="form-group">
 				<label for="username">Username:</label> <input type="text"

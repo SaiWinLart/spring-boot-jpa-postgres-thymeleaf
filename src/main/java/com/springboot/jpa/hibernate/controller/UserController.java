@@ -15,21 +15,32 @@ import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class UserController {
-	@Autowired
-	private MyUserDetailsService userDetailsManager;
+	//@Autowired
+	//private MyUserDetailsService userDetailsManager;
 //	@Autowired
 //	private PasswordEncoder passwordEncoder;
 
-//	@GetMapping("/")
-//	public String index() {
-//		return "index";
-//	}
-//
+	@GetMapping("/")
+	public String index() {
+		return "index";
+	}
+
+	@GetMapping("/admin/home")
+	public String adminHome() {
+		return "adminHome";
+	}
+
+	@GetMapping("user/home")
+	public String userHome() {
+		return "userHome";
+	}
+
 	@GetMapping("/login")
-	public String login(Model model, HttpServletRequest request, HttpSession session,@ModelAttribute("username")String username) {
-		session.setAttribute("error", getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
-		model.addAttribute("username", username);
-		System.out.println("............xx@GetMapping(\"/login\") "+ username);
+	public String login(Model model, HttpServletRequest request, HttpSession session,
+			@ModelAttribute("username") String username) {
+		session.setAttribute("errorMessage", getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
+		model.addAttribute("errorMessage", getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
+		System.out.println("............xx@GetMapping(\"/login\") " + username);
 		return "login";
 	}
 
@@ -52,11 +63,12 @@ public class UserController {
 		Exception exception = (Exception) request.getSession().getAttribute(key);
 		String error = "";
 		if (exception instanceof BadCredentialsException) {
-			error = "Invalid username and password!";
+			error = "Invalid username and password!!";
 		} else if (exception instanceof LockedException) {
-			error = exception.getMessage();
+			error = "An authentication request is rejected because the account is locked";
 		} else {
-			error = "Invalid username and password!";
+			if (exception != null)
+				error = exception.getMessage();
 		}
 		return error;
 	}

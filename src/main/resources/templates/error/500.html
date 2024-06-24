@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>500 Internal Server Error</title>
+     
+    <style>
+        /* Additional inline styles (optional) */
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f9f9f9;
+        }
+        h1 {
+            color: #d9534f;
+        }
+        p {
+            font-size: 16px;
+            margin-bottom: 20px;
+        }
+        
+    </style>
+</head>
+<body>
+    <h1>500 Internal Server Error</h1>
+    <p>Oops! Something went wrong on our end.</p>
+     <p th:utext="${errorMessage}"> </p>
+    <a href="index.html" th:href="@{/}">Back to Home Page</a>
+</body>
+</html>

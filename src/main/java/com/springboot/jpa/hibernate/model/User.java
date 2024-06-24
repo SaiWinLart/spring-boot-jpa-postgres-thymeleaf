@@ -1,5 +1,6 @@
 package com.springboot.jpa.hibernate.model;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -38,19 +39,43 @@ public class User implements UserDetails {
 	private boolean accountNonLocked;
 	@ManyToMany(fetch = FetchType.EAGER)
 	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private Set<Role> roles = new HashSet<>();
-
+	private List<Role> roles = new ArrayList<Role>();
+	private int failedAttemptCount;
 	public User() {
 	}
  
-	public User(Long id, String username, String password, boolean accountNonLocked, Set<Role> roles) {
+	 
+
+	public User(Long id, String username, String password, boolean accountNonLocked, List<Role> roles,
+			int failedAttemptCount) {
 		super();
 		this.id = id;
 		this.username = username;
 		this.password = password;
 		this.accountNonLocked = accountNonLocked;
 		this.roles = roles;
+		this.failedAttemptCount = failedAttemptCount;
 	}
+
+
+
+	public List<Role> getRoles() {
+		return roles;
+	}
+
+
+
+	public void setRoles(List<Role> roles) {
+		this.roles = roles;
+	}
+
+
+
+	public void setAccountNonLocked(boolean accountNonLocked) {
+		this.accountNonLocked = accountNonLocked;
+	}
+
+
 
 	public Long getId() {
 		return id;
@@ -103,20 +128,23 @@ public class User implements UserDetails {
 		return true;
 	}
 
-	public void setAccountNonLocked(Boolean accountNonLocked) {
-		this.accountNonLocked = accountNonLocked;
+	public boolean setAccountNonLocked(Boolean accountNonLocked) {
+		return this.accountNonLocked = accountNonLocked;
 	}
 
 	public boolean getAccountNonLocked() {
 		return accountNonLocked;
 	}
+ 
 
-	public Set<Role> getRoles() {
-		return roles;
+	public int getFailedAttemptCount() {
+		return failedAttemptCount;
 	}
 
-	public void setRoles(Set<Role> roles) {
-		this.roles = roles;
+	public void setFailedAttemptCount(int failedAttemptCount) {
+		this.failedAttemptCount = failedAttemptCount;
 	}
+
+	 
 
 }

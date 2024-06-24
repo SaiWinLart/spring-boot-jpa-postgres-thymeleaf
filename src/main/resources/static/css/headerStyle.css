@@ -1,0 +1,30 @@
+body {
+  margin: 0;  /* Remove default body margin */
+  padding: 0;  /* Remove default body padding */
+  font-family: sans-serif;  /* Choose a nice font family */
+}
+
+.user-info, .buttons {
+  display: flex;  /* Arrange elements horizontally */
+  justify-content: space-between;  /* Distribute space evenly */
+  align-items: center;  /* Align content vertically */
+  padding: 10px 20px;  /* Add some padding */
+  background-color: #f5f5f5;  /* Light gray background */
+  border-bottom: 1px solid #ddd;  /* Add a separator line */
+}
+
+.user-info span {
+  margin-right: 10px;  /* Add space between elements */
+}
+.buttons button, .buttons input[type="submit"] {
+  padding: 8px 15px;
+  background-color: #4CAF50;  /* Green button color */
+  color: white;
+  border: none;  /* Remove borders */
+  border-radius: 5px;  /* Rounded corners */
+  cursor: pointer;  /* Change cursor on hover */
+}
+
+.buttons button:hover, .buttons input[type="submit"]:hover {
+  background-color: #3e8e41;  /* Darker green on hover */
+}

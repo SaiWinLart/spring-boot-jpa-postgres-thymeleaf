@@ -5,8 +5,9 @@
 <link rel="stylesheet" type="text/css" href="/css/addEmployeeStyle.css">
 </head>
 <body>
+	<div th:include="~{'/header.html'}"></div>
 	<div>
-		<form id="employeeForm" th:action="@{/save-employee}"
+		<form id="employeeForm" th:action="@{/admin/save-employee}"
 			th:object="${employee}" method="post">
 			<label for="name">Name:</label><br> <input type="text" id="name"
 				th:field="*{name}"><br>
@@ -16,16 +17,16 @@
 				type="text" id="department" th:field="*{department}"><br>
 			<label for="role">Role:</label><br> <input type="text" id="role"
 				th:field="*{role}"><br> <label for="mmNrc">MMNRC
-				ID:</label><br> <input type="text" id="mmNrc" th:field="*{mmNrc}"><br>
+				ID:</label><br> <input type="text" id="mmNrc" th:field="*{mmNrc}"><br>  
 			<p th:if="${#fields.hasErrors('mmNrc')}" th:errorclass="error"
 				th:errors="*{mmNrc}" />
 			<button type="button" id="checkId">Check ID</button>
 			<input type="submit" value="Submit">
 		</form>
 	</div>
-	<div>
-		<button onclick="window.location.href='/add-mmnrc'" id="addNewMMnrc">Add
-			new MMNrc</button>
+	<div id="addButton">
+		<button onclick="window.location.href='/admin/add-mmnrc'"
+			id="addNewMMnrc">Add new MMNrc</button>
 		<!--  <div th:if="${#fields.hasErrors('globalError')}">
 		<h3>Global errors:</h3>
 		<p th:each="err : ${#fields.errors('globalError')}" th:text="${err}"

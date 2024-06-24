@@ -5,7 +5,7 @@
     <link rel="stylesheet" type="text/css" th:href="@{/css/showImage.css}" />
 </head>
 <body>
-    
+    <div th:include="~{'/header.html'}"></div>
     <div class="image-container">
         <img th:if="${imageSrc}" th:src="${imageSrc}" alt="Image not available"/> <!-- Show image only if imageSrc is present -->
     </div> 

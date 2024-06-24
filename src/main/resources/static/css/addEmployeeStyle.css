@@ -1,34 +1,39 @@
 /* Body background */
 body {
-    background-color: #f0f8ea; /* Light green background */
+    background-color: rgb(128, 255, 128); /* Light green background */
     font-family: Arial, sans-serif;
 }
 
 /* Container for details */
-#employeeForm  {
-	width: 500px;
-    background-color: #ffffff; /* White background */
-    padding: 20px;
-    border-radius: 6px;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-    align-content: center;
-    margin: 0 auto;
+#employeeForm , #addButton{
+  width: 60%;
+	margin: 50px auto;
+	padding: 20px;
+	background-color: #fff;
+	box-shadow: 0px 0px 10px 0px rgba(0, 0, 0, 0.1);
+	border-radius: 10px; 
 }
- 
+
+/* Label styling */
 label {
-    display: block;
-    margin-bottom: 5px;
+    display: inline-block;
+    margin-bottom: 5px; /* Increased space between label and input */
 }
+
+/* Input text styling */
 input[type="text"] {
-    width: 100%;
+    width: calc(100% - 22px); /* Adjust width to account for padding and border */
     padding: 10px;
-    margin-bottom: 10px;
+    margin-bottom: 20px; /* Space between input text and button */
     border: 1px solid #ddd;
+    box-sizing: border-box;
     border-radius: 6px;
 }
-button#checkId {
-    width: 100%;
-    padding: 8px;
+
+/* Button styling */
+#checkId, #addNewMMnrc { 
+	 width: 100%;
+    padding: 10px;
     margin-bottom: 10px;
     background-color: #007BFF;
     color: #fff;
@@ -37,38 +42,30 @@ button#checkId {
     border-radius: 6px;
 }
 
-button#addNewMMnrc {
-	
-   width: 50%; 
-    padding: 10px;
-     margin-left :330px;
-     margin-right :330px;
-     margin-top :20px;
-   
-    background-color: rgb(128, 255, 128) ;
-    color: #fff;
-    cursor: pointer;
-    border: none;
-    border-radius: 6px; 
-    display: inline-block;
-}
-
-button#checkId:hover {
+/* Button hover effect */
+button:hover {
     background-color: #0056b3;
 }
+
+/* Submit button styling */
 input[type="submit"] {
     width: 100%;
     padding: 15px;
-    margin-bottom: 10px;
+    margin-top: 20px; /* Added space above submit button */
     background-color: #4CAF50;
     color: white;
     cursor: pointer;
     border: none;
     border-radius: 6px;
 }
+
+/* Submit button hover effect */
 input[type="submit"]:hover {
     background-color: #45a049;
 }
+
+/* Error message styling */
 .error {
-        color: red;
-    }
+    color: red;
+    margin-top: 10px; /* Space above error message */
+}

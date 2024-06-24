@@ -30,9 +30,8 @@ public class EmployeeController {
 		this.mmNrcService = mmNrcService;
 	}
 
-	 
 	@GetMapping("/home")
-	public String viewHomePage(Model model) { 
+	public String viewHomePage(Model model) {
 		return "index";
 	}
 
@@ -48,7 +47,7 @@ public class EmployeeController {
 		return "showAllEmployees";
 	}
 
-	@PostMapping("/save-employee")
+	@PostMapping("/admin/save-employee")
 	public String addEmployee(@ModelAttribute("employee") @Valid Employee employee, BindingResult result, Model model,
 			RedirectAttributes redirectAttributes) {
 		String err = "";
@@ -83,7 +82,7 @@ public class EmployeeController {
 
 	}
 
-	@PostMapping("/delete-employees")
+	@PostMapping("/admin/delete-employees")
 	public String deleteEmployees(@RequestParam("employeeIds") List<Long> employeeIds) {
 		if (employeeIds.isEmpty()) {
 

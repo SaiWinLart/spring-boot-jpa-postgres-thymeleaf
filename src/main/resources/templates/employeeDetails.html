@@ -6,7 +6,9 @@
 	th:href="@{/css/employeeDetails.css}" />
 </head>
 <body>
+	<div th:include="~{'/header.html'}"></div>
 	<h1>MM Nrc Details</h1>
+
 	<!-- <div class="flex-container"> -->
 	<div class="grid-container">
 		<div class="details-container">
@@ -38,14 +40,16 @@
 				<b>State/Division:</b> <span th:text="${mmnrc.stateAndDivision}"></span>
 			</p>
 			<p>
-				<b>Occupation:</b> <span th:text="${mmnrc.occupation != null && mmnrc.occupation != '' ? mmnrc.occupation : 'NA'}"></span>
+				<b>Occupation:</b> <span
+					th:text="${mmnrc.occupation != null && mmnrc.occupation != '' ? mmnrc.occupation : 'NA'}"></span>
 			</p>
 			<p>
 				<b>Blood Type:</b> <span th:text="${mmnrc.bloodType}"></span>
 			</p>
-			
+
 			<p>
-				<b>Address:</b> <span th:text="${mmnrc.addressId != null && mmnrc.addressId != '' ? mmnrc.addressId : 'NA'}"></span>
+				<b>Address:</b> <span
+					th:text="${mmnrc.addressId != null && mmnrc.addressId != '' ? mmnrc.addressId : 'NA'}"></span>
 			</p>
 		</div>
 

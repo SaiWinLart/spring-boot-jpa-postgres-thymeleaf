@@ -1,36 +1,42 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>Error page</title>
-    <meta charset="utf-8" />
-    
-    <style>
-        /* Add your custom styles here */
-        body {
-            background-color: #f9f9f9;
-            font-family: Arial, sans-serif;
-        }
-        h1 {
-            color: #ff6347;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
-        }
-        p {
-            color: #333;
-            font-size: 16px;
-        }
-        a {
-            color: #007bff;
-            text-decoration: none;
-            transition: color 0.3s;
-        }
-        a:hover {
-            color: #0056b3;
-        }
-    </style>
+<title>Error page</title>
+<meta charset="utf-8" />
+
+<style>
+/* Add your custom styles here */
+body {
+	background-color: #f9f9f9;
+	font-family: Arial, sans-serif;
+}
+
+h1 {
+	color: #ff6347;
+	text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+p {
+	color: #333;
+	font-size: 16px;
+}
+
+a {
+	color: #007bff;
+	text-decoration: none;
+	transition: color 0.3s;
+}
+
+a:hover {
+	color: #0056b3;
+}
+</style>
 </head>
-<body  >
-      <h1 th:text="|${httpStatus} - ${httpStatus.reasonPhrase}|">404</h1>   
-    <p th:utext="${errorMessage}">Error java.lang.NullPointerException</p>
-    <a href="index.html" th:href="@{/}">Back to Home Page</a>
+<body>
+	<div th:include="~{'/header.html'}"></div>
+	<!--   <h1 th:text="|${httpStatus} - ${httpStatus.reasonPhrase}|">404</h1>    -->
+
+	<p th:utext="${errorMessage}">Error java.lang.NullPointerException</p>
+	<a href="index.html" th:href="@{/}">Back to Home Page</a>
 </body>
-</html> 
+</html>

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<link rel="stylesheet" href="/css/headerStyle.css">
+<title>Page Header</title>
+</head>
+<body>
+	<div class="user-info">
+		Logged in as: <span th:text="${#authentication.name}"></span><br>
+		Role: <span th:text="${#authentication.authorities}"></span>
+	</div>
+<div class="buttons">
+    <button id="home-button" th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}" onclick="window.location.href='/admin/home'">Home</button>
+    <button id="home-button" th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}" onclick="window.location.href='/user/home'">Home</button>
+    <form th:action="@{/logout}" method="post">
+        <input type="submit" value="Sign Out" />
+    </form>
+</div>
+
+
+</body>
+</html>

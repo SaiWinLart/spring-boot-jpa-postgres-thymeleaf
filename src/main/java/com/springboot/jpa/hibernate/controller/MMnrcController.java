@@ -37,13 +37,13 @@ public class MMnrcController {
 		this.employeeService = employeeService;
 	}
  
-	@GetMapping("/add-mmnrc")
+	@GetMapping("/admin/add-mmnrc")
 	public String showAddMmnrcForm(Model model) {
 		model.addAttribute("mmnrc", new MMnrc());
 		return "addMMnrc";
 	}
 
-	@PostMapping("/add-mmnrc")
+	@PostMapping("/admin/add-mmnrc")
 	public String addMmnrc(@ModelAttribute("mmnrc") @Valid MMnrc mmnrc, BindingResult result,
 			RedirectAttributes attributes) {
 		if (result.hasErrors()) {
@@ -66,7 +66,7 @@ public class MMnrcController {
 		return "showAllMmnrc";
 	}
 
-	@PostMapping("/delete-mmnrcs")
+	@PostMapping("/admin/delete-mmnrcs")
 	public String deleteMmnrcs(@RequestParam("mmnrcIds") List<String> mmnrcIds) {
 		if (mmnrcIds.isEmpty()) {
 

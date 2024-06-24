@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head>
+<title>Welcome Page</title>
+</head>
+<body>
+	<div th:include="~{'/header.html'}"></div>
+	<a th:href="@{/upload-image}">Upload Image</a>
+	<br />
+	<a th:href="@{/show-image}">View Image</a>
+	<br />
+	<a th:href="@{/get-all-employees}">Show Employee List</a>
+	<br />
+	<a th:href="@{/get-all-mmnrcs}">Show MM Nrc List</a>
+	<br />
+</body>
+</html>

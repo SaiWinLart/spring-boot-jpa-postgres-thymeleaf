@@ -1,5 +1,7 @@
+
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head>
 <title>Employee List</title>
 <link rel="stylesheet" type="text/css"
@@ -36,13 +38,15 @@
 </script>
 </head>
 <body class="container">
+	<div th:include="~{'/header.html'}"></div>
 	<h2>Employee List</h2>
-	<form action="#" th:action="@{/delete-employees}" method="post"
+	<form action="#" th:action="@{/admin/delete-employees}" method="post"
 		id="employeeForm" onsubmit="return validateForm()">
 		<table>
 			<tr>
-				<th><input type="checkbox" onClick="selectAllCheckboxes(this)" />
-					Select All/De-Select All</th>
+				<th th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"><input
+					type="checkbox" onClick="selectAllCheckboxes(this)" /> Select
+					All/De-Select All</th>
 
 				<th>Name</th>
 				<th>Department</th>
@@ -50,8 +54,8 @@
 				<th>NRC ID</th>
 			</tr>
 			<tr th:each="employee : ${employees}">
-				<td><input type="checkbox" th:value="${employee.id}"
-					name="employeeIds" /></td>
+				<td th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"><input
+					type="checkbox" th:value="${employee.id}" name="employeeIds" /></td>
 
 				<td th:text="${employee.name}"></td>
 				<td
@@ -63,16 +67,19 @@
 					th:text="${employee.mmNrc}"></a></td>
 			</tr>
 
-		</table> 
+		</table>
 	</form>
 	<table style="border-collapse: collapse;">
-		<tr >
-			<td id="button"><button onclick="deleteSelectedEmployees()">Delete
-					Selected Employees</button></td>
+		<tr>
+			<td id="button"><button onclick="deleteSelectedEmployees()"
+					th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
+					type="button">Delete Selected Employees</button></td>
 
 			<td id="button"><button
-					onclick="window.location.href='/add-employee'">add new
-					Employee</button></td>
+					onclick="window.location.href='/admin/add-employee'"
+					th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
+					type="button">add new Employee</button></td>
+
 		</tr>
 	</table>
 </body>

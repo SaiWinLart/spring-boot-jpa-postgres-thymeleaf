@@ -20,12 +20,17 @@ body {
 	font-weight: bold;
 }
 
-#mmnrcForm input[type="text"], #mmnrcForm input[type="number"],
-	#mmnrcForm input[type="date"], #mmnrcForm select {
-	width: 100%;
-	padding: 10px;
-	border: 1px solid #ddd;
+#mmnrcForm input[type="text"],
+#mmnrcForm input[type="number"],
+#mmnrcForm input[type="date"],
+#mmnrcForm select {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ddd;
+  box-sizing: border-box; /* Ensure padding doesn't affect width */
+  border-radius: 6px;
 }
+
 
 #mmnrcForm input[type="submit"] {
 	margin-top: 20px;
