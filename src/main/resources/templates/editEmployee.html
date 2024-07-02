@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Edit Employee</title>
+<link rel="stylesheet" type="text/css"
+	th:href="@{/css/addEmployeeStyle.css}" />
+</head>
+
+<body>
+	<div th:insert="~{'/header.html'}"></div>
+	<h2>Edit Employee</h2>
+	<div>
+		<form id="employeeForm" th:action="@{/admin/update-employee}"
+			th:object="${employee}" method="post">
+
+			<label for="id">Employee ID:</label><br> <input type="text"
+				id="id" th:field="*{id}" readonly="readonly"><br> <label
+				for="name">Name:</label><br> <input type="text" id="name"
+				th:field="*{name}"><br>
+			<p th:if="${#fields.hasErrors('name')}" th:errorclass="error"
+				th:errors="*{name}" />
+			<label for="department">Department:</label><br> <input
+				type="text" id="department" th:field="*{department}"><br>
+			<label for="role">Role:</label><br> <input type="text" id="role"
+				th:field="*{role}"><br> <label for="mmNrc">MMNRC
+				ID:</label><br> <input type="text" id="mmNrc" th:field="*{mmNrc}"><br>
+			<p th:if="${#fields.hasErrors('mmNrc')}" th:errorclass="error"
+				th:errors="*{mmNrc}" />
+			<br> <span th:if="${errorMessage}" th:text="${errorMessage}"
+				class="error">Error</span>
+			<button type="button" id="checkId">Check ID</button>
+			<button type="submit">Update Employee</button>
+		</form>
+	</div>
+
+	<script>
+        document.getElementById("checkId").addEventListener("click", function(){
+            var mmId = document.getElementById("mmNrc").value;
+             //trim'/' in nrc to pass in url.
+            let trimid = mmId.replace(/\//g, "");
+            console.log(trimid); 
+
+            fetch('/checkId/' + trimid)
+            .then(response => response.json())
+            .then(data => {
+                if(data.exists) {
+                    alert("Valid MM Nrc ID.");
+                } else {
+                    alert("Invalid MM Nrc ID.");
+                }
+            });
+        });
+    </script>
+</body>
+</html>

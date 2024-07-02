@@ -5,7 +5,7 @@
 <link rel="stylesheet" type="text/css" th:href="@{/css/addMMnrc.css}" />
 </head>
 <body>
-	<div th:include="~{'/header.html'}"></div>
+	<div th:insert="~{'/header.html'}"></div>
 	<form id="mmnrcForm" th:action="@{/admin/add-mmnrc}"
 		th:object="${mmnrc}" method="post">
 		<label for="mmId">MMID:</label><br> <input type="text" id="mmId"

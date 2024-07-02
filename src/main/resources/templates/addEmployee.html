@@ -5,7 +5,7 @@
 <link rel="stylesheet" type="text/css" href="/css/addEmployeeStyle.css">
 </head>
 <body>
-	<div th:include="~{'/header.html'}"></div>
+	<div th:insert="~{'/header.html'}"></div>
 	<div>
 		<form id="employeeForm" th:action="@{/admin/save-employee}"
 			th:object="${employee}" method="post">

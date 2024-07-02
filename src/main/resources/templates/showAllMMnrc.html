@@ -8,7 +8,7 @@
 <script th:src="@{/js/MMnrcList.js}" type="text/javascript"></script>
 </head>
 <body>
-	<div th:include="~{'/header.html'}"></div>
+	<div th:insert="~{'/header.html'}"></div>
 	<div class="container">
 		<div class="delete-selected-container">
 			<h1>MMnrc Management System</h1>
@@ -27,13 +27,13 @@
 							<th>Gender</th>
 							<th>Father Name</th>
 							<th>Mother Name</th>
-							<th>Issue Date</th>
+							<!-- <th>Issue Date</th>
 							<th>Date of Birth</th>
 							<th>City of Birth</th>
 							<th>State/Division</th>
 							<th>Address ID</th>
 							<th>Occupation</th>
-							<th>Blood Type</th>
+							<th>Blood Type</th> -->
 						</tr>
 					</thead>
 					<tbody>
@@ -41,13 +41,15 @@
 							<td class="checkbox-column"
 								th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"><input
 								type="checkbox" th:name="mmnrcIds" th:value="${mmnrc.mmId}" /></td>
-							<td th:text="${mmnrc.mmId}"></td>
+							<!-- <td th:text="${mmnrc.mmId}"></td> -->
+							<td><a th:href="@{'/mmnrc-details?mmId=' + ${mmnrc.mmId}}"
+					th:text="${mmnrc.mmId}"></a></td>
 							<td th:text="${mmnrc.name}"></td>
 							<td th:text="${mmnrc.age == 0 ? 'NA'  : mmnrc.age }"></td>
 							<td th:text="${mmnrc.gender}"></td>
 							<td th:text="${mmnrc.fatherName}"></td>
 							<td th:text="${mmnrc.motherName}"></td>
-							<td th:text="${mmnrc.issueDate} ?:'NA'"></td>
+							<!-- <td th:text="${mmnrc.issueDate} ?:'NA'"></td>
 							<td th:text="${mmnrc.dateOfBirth}"></td>
 							<td th:text="${mmnrc.cityOfBirthPlace}"></td>
 							<td th:text="${mmnrc.stateAndDivision}"></td>
@@ -55,7 +57,7 @@
 								th:text="${mmnrc.addressId != null && mmnrc.addressId != '' ? mmnrc.addressId : 'NA'}"></td>
 							<td
 								th:text="${mmnrc.occupation != null && mmnrc.occupation != '' ? mmnrc.occupation : 'NA'}"></td>
-							<td th:text="${mmnrc.bloodType}"></td>
+							<td th:text="${mmnrc.bloodType}"></td> -->
 						</tr>
 					</tbody>
 				</table>

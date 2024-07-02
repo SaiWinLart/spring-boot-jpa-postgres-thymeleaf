@@ -38,8 +38,28 @@
 </script>
 </head>
 <body class="container">
-	<div th:include="~{'/header.html'}"></div>
-	<h2>Employee List</h2>
+	<div th:insert="~{'/header.html'}"></div>
+	
+	<div class="container">
+		<h1>Employee List</h1>
+	</div>
+
+	<div id="search-form"> 
+	<h2 class="alignleft">Search the Employee</h2><br><br>
+	<form  th:action="@{/get-employee}" method="get" th:object="${employee}" >
+	<span th:if="${errorMessage}" th:text="${errorMessage}" class="error">Error</span><br>
+	   <label for="id">Employee ID:</label><br> <input type="text"
+		  id="id" th:field="*{id}"  ><br>  
+	 			 	
+		<label for="name">Name:</label><br> <input type="text" id="name"
+			th:field="*{name}"><br>
+		<p th:if="${#fields.hasErrors('name')}" th:errorclass="error"
+			th:errors="*{name}" />
+			 <br>
+			<button type="submit" >Search</button> 
+			</form>
+			
+	</div>
 	<form action="#" th:action="@{/admin/delete-employees}" method="post"
 		id="employeeForm" onsubmit="return validateForm()">
 		<table>
@@ -47,7 +67,7 @@
 				<th th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"><input
 					type="checkbox" onClick="selectAllCheckboxes(this)" /> Select
 					All/De-Select All</th>
-
+				<th>Employee ID</th>
 				<th>Name</th>
 				<th>Department</th>
 				<th>Role</th>
@@ -56,7 +76,8 @@
 			<tr th:each="employee : ${employees}">
 				<td th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"><input
 					type="checkbox" th:value="${employee.id}" name="employeeIds" /></td>
-
+				<td th:text="${employee.id}"></td>
+			
 				<td th:text="${employee.name}"></td>
 				<td
 					th:text="${employee.department != null && employee.department != '' ? employee.department : 'NA'}"></td>

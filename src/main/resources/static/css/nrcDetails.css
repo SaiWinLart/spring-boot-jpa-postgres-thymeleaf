@@ -38,18 +38,13 @@ a {
 a:hover {
     color: #2e8b57; /* Lighter green on hover */
 }
-
-/* Create a flex container */
-.flex-container {
-    display: flex;
-    /* Other styles as needed */
-}
+ 
 /* Create a grid container */
 .grid-container {
-    display: grid;
-     
-    grid-template-columns: 1fr 1fr; /* Two equal columns */
-    grid-column-gap: 5px; /* Adjust the value as needed */ 
+    display: grid; 
+     grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    place-items: center; 
     padding-left: 10px;
 }
 /* Container for details */
@@ -58,7 +53,7 @@ a:hover {
     padding: 10px;
     border-radius: 10px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    width:95%; 
+    width:85%; 
     border: 1px solid green; /* Optional: Add a border for visual clarity */
     
 }
@@ -73,13 +68,12 @@ a:hover {
     border: none;
     border-radius: 6px;
 }
-
 #edit-button {
     background-color: #80ff00; /* Green */
     color: white;
     padding: 10px 20px; /* Adjust as needed */
-    font-size: 14px; /* Adjust font size */
-    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+    font-size: 16px; /* Adjust font size */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); /* Optional: Add shadow effect */
      border: none;  /* Remove borders */
   border-radius: 5px;  /* Rounded corners */
 }

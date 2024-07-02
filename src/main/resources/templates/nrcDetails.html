@@ -1,46 +1,15 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-<title>Employee Details Info</title>
-<link rel="stylesheet" type="text/css"
-	th:href="@{/css/employeeDetails.css}" />
+<title>MM Nrc Details</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/nrcDetails.css}" />
 </head>
 <body>
 	<div th:insert="~{'/header.html'}"></div>
-	<h1>Employee Details Info</h1>
+	<h1>MM Nrc Details</h1>
 
-	<!-- <div class="flex-container"> -->
+
 	<div class="grid-container">
-
-
-		<div class="details-container">
-			<form th:action="@{/admin/edit-employee}" method="get">
-				<p>
-					<b>Employee ID:</b> <span th:text="${employee.id}"></span>
-				</p>
-				<p>
-					<b>MM Nrc ID:</b> <span> <a
-						th:href="@{'/admin/edit-employee?employeeId=' + ${employee.id}}"
-						th:text="${employee.mmNrc}"></a>
-					</span>
-				</p>
-				<p>
-					<b>Name:</b> <span th:text="${employee.name}"></span>
-				</p>
-				<p>
-					<b>Department:</b> <span th:text="${employee.department}"></span>
-				</p>
-				<p>
-					<b>Role:</b> <span th:text="${employee.role}"></span>
-				</p>
-
-				<input type="hidden" name="employeeId" th:value="${employee.id}" />
-				<button type="submit" id="edit-button"
-					th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Edit</button>
-			</form>
-
-		</div>
-
 		<div class="details-container">
 			<p>
 				<b>MM Nrc ID:</b> <span th:text="${mmnrc.mmId}"></span>
@@ -64,6 +33,9 @@
 				<b>Date of Birth:</b> <span th:text="${mmnrc.dateOfBirth}"></span>
 			</p>
 			<p>
+				<b>Issue Date:</b> <span th:text="${mmnrc.issueDate}"></span>
+			</p>
+			<p>
 				<b>City of Birth:</b> <span th:text="${mmnrc.cityOfBirthPlace}"></span>
 			</p>
 			<p>
@@ -82,9 +54,12 @@
 					th:text="${mmnrc.addressId != null && mmnrc.addressId != '' ? mmnrc.addressId : 'NA'}"></span>
 			</p>
 		</div>
-
-
-
+		<br>
+		<form th:action="@{/admin/edit-mmnrc}" method="get">
+			<input type="hidden" name="mmId" th:value="${mmnrc.mmId}" />
+			<button type="submit" id="edit-button"
+				th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Edit</button>
+		</form>
 	</div>
 </body>
 </html>

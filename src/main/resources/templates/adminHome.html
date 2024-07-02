@@ -4,7 +4,7 @@
 <title>Welcome Page</title>
 </head>
 <body>
-	 <div th:include="~{'/header.html'}"></div>
+	 <div th:insert="~{'/header.html'}"></div>
 	<a th:href="@{/admin/add-employee}">Add New Employee</a>
 	<br />
 	<a th:href="@{/admin/add-mmnrc}">Add New MM Nrc</a>
@@ -16,10 +16,6 @@
 	<a th:href="@{/get-all-employees}">Show Employee List</a>
 	<br />
 	<a th:href="@{/get-all-mmnrcs}">Show MM Nrc List</a>
-	<br />
-	<form th:action="@{/logout}" method="post">
-		<input type="submit" value="Sign Out" />
-	</form>
-
+	<br /> 
 </body>
 </html>

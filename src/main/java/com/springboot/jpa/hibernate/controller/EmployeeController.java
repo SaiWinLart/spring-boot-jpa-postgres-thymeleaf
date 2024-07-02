@@ -9,11 +9,13 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.springboot.jpa.hibernate.model.Employee;
+import com.springboot.jpa.hibernate.model.MMnrc;
 import com.springboot.jpa.hibernate.service.IEmployeeService;
 import com.springboot.jpa.hibernate.service.IMmnrcService;
 
@@ -41,11 +43,68 @@ public class EmployeeController {
 		return "addEmployee";
 	}
 
+	@GetMapping("/employee-details/{employeeId}")
+	public String getMMnrcByEmployeeId(@PathVariable Long employeeId, Model model) {
+
+		Employee employee = employeeService.getEmployeeById(employeeId);
+		MMnrc mmnrc = mmNrcService.getMMnrcByMMid(employee.getMmNrc());
+		model.addAttribute("mmnrc", mmnrc);
+		model.addAttribute("employee", employee);
+		return "employeeDetails";
+	}
+
+	@GetMapping("/admin/edit-employee")
+	public String showEditEmployeeForm(@RequestParam("employeeId") Long employeeId, Model model) {
+
+		Employee employee = employeeService.getEmployeeById(employeeId);
+		model.addAttribute("employee", employee);
+		return "editEmployee";
+	}
+
 	@GetMapping("/get-all-employees")
 	public String showEmployeeList(Model model) {
 		model.addAttribute("employees", employeeService.getAllEmployees());
+		model.addAttribute("employee", new Employee());
+		model.addAttribute("id", "");
+		model.addAttribute("name", "");
 		return "showAllEmployees";
 	}
+
+	@GetMapping("/get-employee")
+	public String searchEmployee(@RequestParam(value = "id", required = false) Long employeeId,
+			@RequestParam("name") String employeeName, Model model) {
+		String err;
+		try {
+			List<Employee> employees = employeeService.findByNameOrId(employeeName, employeeId);
+			Employee employee = new Employee();
+			employee.setId(employeeId);
+			employee.setName(employeeName);
+			model.addAttribute("employee", employee);
+			model.addAttribute("employees", employees);
+			return "showAllEmployees";
+
+		} catch (Exception e) {
+			err = "No Employee match this ID." + e.getMessage();
+			// ObjectError error = new ObjectError("globalError", err);
+			// result.addError(error);
+			model.addAttribute("errorMessage", err);
+			Employee employee = new Employee();
+			employee.setId(employeeId);
+			employee.setName(employeeName);
+			model.addAttribute("employee",employee);
+			return "showAllEmployees";
+		}
+
+	}
+
+//	@ExceptionHandler(MissingServletRequestParameterException.class)
+//    public String handleMissingParams(MissingServletRequestParameterException ex, Model model) {
+//        String paramName = ex.getParameterName();  
+//        model.addAttribute("errorMessage", paramName + " parameter is needed to input for search.");
+//        model.addAttribute("employee", new Employee()); 
+//        return "showAllEmployees";
+//	}
+// 
 
 	@PostMapping("/admin/save-employee")
 	public String addEmployee(@ModelAttribute("employee") @Valid Employee employee, BindingResult result, Model model,
@@ -78,6 +137,46 @@ public class EmployeeController {
 			result.rejectValue("mmNrc", "error.unique.employee",
 					"Nrc ID : " + employee.getMmNrc() + " already exists in this company.");
 			return "addEmployee";
+		}
+
+	}
+
+	@PostMapping("/admin/update-employee")
+	public String updateEmployee(@ModelAttribute("employee") @Valid Employee employee, BindingResult result,
+			Model model, RedirectAttributes redirectAttributes) {
+		Employee existingEmployee = employeeService.getEmployeeById(employee.getId());
+		String err = "";
+		try {
+
+			if (result.hasErrors()) {
+				redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.employee", result);
+				redirectAttributes.addFlashAttribute("employee", employee);
+
+				return "editEmployee";
+			}
+			if (!mmNrcService.mmIdExist(employee.getMmNrc())) {
+				err = "Invalid Nrc id, can't update employee. Please input valid MM NRC.";
+				ObjectError error = new ObjectError("globalError", err);
+				result.addError(error);
+				model.addAttribute("errorMessage", err);
+				return "editEmployee";
+			} else {
+				existingEmployee.setId(employee.getId());
+				existingEmployee.setName(employee.getName());
+				existingEmployee.setMmNrc(employee.getMmNrc());
+				existingEmployee.setDepartment(employee.getDepartment());
+				existingEmployee.setRole(employee.getRole());
+				employeeService.saveEmployee(existingEmployee);
+
+				model.addAttribute("employee", existingEmployee);
+
+				return "successfullySavedPage";
+			}
+
+		} catch (DataIntegrityViolationException exception) {
+			result.rejectValue("mmNrc", "error.unique.employee",
+					"Nrc ID : " + employee.getMmNrc() + " already exists in this company.");
+			return "editEmployee";
 		}
 
 	}

@@ -3,11 +3,7 @@ package com.springboot.jpa.hibernate.service;
 import java.util.List;
 import java.util.Optional;
 
-import org.springframework.boot.autoconfigure.security.SecurityProperties.User;
 import org.springframework.stereotype.Service;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 
 import com.springboot.jpa.hibernate.model.Employee;
 import com.springboot.jpa.hibernate.respository.IEmployeeRepository;
@@ -45,7 +41,6 @@ public class EmployeeServiceImpl implements IEmployeeService {
 		}
 		return employee;
 	}
- 
 
 	@Override
 	public String updateEmployee(Employee employee, Long id) {
@@ -86,6 +81,48 @@ public class EmployeeServiceImpl implements IEmployeeService {
 			return "Table is empty, no data is deleted. ";
 		}
 
+	}
+
+	@Override
+	public List<Employee> getEmployeeByNameAndId(String name, Long id) {
+
+		List<Employee> employees = employeeRepository.findByNameAndId(name, id);
+
+		if (employees != null) {
+			return employees;
+		} else {
+			throw new RuntimeException(" Employee not found for id :: " + id);
+		}
+
+	}
+
+	@Override
+	public List<Employee> findByNameOrId(String name, Long id) {
+
+		List<Employee> employees = employeeRepository.findByNameOrId(name, id);
+
+		if (employees.isEmpty()) {
+
+			throw new RuntimeException(" Employee not found for id => " + id);
+		} else {
+			return employees;
+		}
+
+	}
+
+	@Override
+	public List<Employee> findAllByNameContainingOrId(String name, Long id) {
+		if (id == null) {
+			throw new RuntimeException("Id have to input");
+		}
+		List<Employee> employees = employeeRepository.findAllByNameContainingOrId(name, id);
+
+		if (employees.isEmpty()) {
+
+			throw new RuntimeException(" Employee not found for id :: " + id);
+		} else {
+			return employees;
+		}
 	}
 
 }

@@ -1,6 +1,5 @@
 package com.springboot.jpa.hibernate.model;
 
-import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,6 +7,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 import jakarta.persistence.UniqueConstraint;
 import jakarta.validation.constraints.NotEmpty;
+import jakarta.validation.constraints.NotNull;
 import jakarta.validation.constraints.Pattern;
 import jakarta.validation.constraints.Size;
 
@@ -16,6 +16,7 @@ import jakarta.validation.constraints.Size;
 public class Employee {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	//@NotNull(message = "ID cannot be empty.")
 	private Long id;
 	@NotEmpty(message = "Name cannot be empty.")
 	@Size(min = 2, max = 50)

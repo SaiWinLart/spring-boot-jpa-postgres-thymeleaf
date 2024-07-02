@@ -40,7 +40,7 @@ public class UserController {
 			@ModelAttribute("username") String username) {
 		session.setAttribute("errorMessage", getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
 		model.addAttribute("errorMessage", getErrorMessage(request, "SPRING_SECURITY_LAST_EXCEPTION"));
-		System.out.println("............xx@GetMapping(\"/login\") " + username);
+		//System.out.println("............xx@GetMapping(\"/login\") " + username);
 		return "login";
 	}
 

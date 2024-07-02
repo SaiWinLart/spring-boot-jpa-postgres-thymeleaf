@@ -90,7 +90,7 @@ public class SecurityConfig {
 		authenticationProvider.setUserDetailsService(userDetailsService);
 		authenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
 		// authenticationProvider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
-		System.out.println(".................authProvider..AuthenticationManager...");
+		//System.out.println(".................authProvider..AuthenticationManager...");
 		return authenticationProvider;
 	}
 	@Bean

@@ -6,10 +6,12 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -29,12 +31,10 @@ import jakarta.validation.Valid;
 @Controller
 public class MMnrcController {
 
-	private final IMmnrcService mmNrcService; // Use MmnrcService interface
-	private final IEmployeeService employeeService;
+	private final IMmnrcService mmNrcService; // Use MmnrcService interface 
 
 	public MMnrcController(IMmnrcService mmnrcService, IEmployeeService employeeService) {
-		this.mmNrcService = mmnrcService;
-		this.employeeService = employeeService;
+		this.mmNrcService = mmnrcService; 
 	}
  
 	@GetMapping("/admin/add-mmnrc")
@@ -58,7 +58,38 @@ public class MMnrcController {
 		}
 
 	}
+	@GetMapping("/admin/edit-mmnrc")
+	public String showEditEmployeeForm(@RequestParam("mmId") String mmId, Model model) {
+ 
+		 MMnrc mmnrc = mmNrcService.getMMnrcByMMid(mmId);
+		 model.addAttribute("mmnrc", mmnrc); 
+		return "editMMnrc";
+	}
+	
+	@PostMapping("/admin/update-mmnrc")
+	public String updateMMnrc(@ModelAttribute("mmnrc") @Valid MMnrc mmnrc, BindingResult result, Model model,
+			RedirectAttributes redirectAttributes) {
+		MMnrc existingMMnrc = mmNrcService.getMMnrcByMMid(mmnrc.getMmId());
+		String err = "";
+		 
+			if (result.hasErrors()) {
+				redirectAttributes.addFlashAttribute("org.springframework.validation.BindingResult.mmnrc", result);
+				redirectAttributes.addFlashAttribute("mmnrc", mmnrc);
 
+				return "editMMnrc";
+			}
+		 else {
+				  
+			 mmNrcService.saveMMnrc(mmnrc);
+
+				model.addAttribute("mmnrc", mmnrc);
+
+				return "successfullySavedPage";
+			}
+           
+	 
+	}
+	
 	@GetMapping("/get-all-mmnrcs")
 	public String showMmnrcList(Model model) {
 		List<MMnrc> mmnrcs = mmNrcService.getAllMMnrcs();
@@ -66,6 +97,16 @@ public class MMnrcController {
 		return "showAllMmnrc";
 	}
 
+
+	@GetMapping("/mmnrc-details")
+	public String getMMnrcByEmployeeId(@RequestParam("mmId") String mmId, Model model) {
+ 
+		MMnrc mmnrc = mmNrcService.getMMnrcByMMid(mmId);
+		model.addAttribute("mmnrc", mmnrc); 
+		return "nrcDetails";
+	}
+	
+	
 	@PostMapping("/admin/delete-mmnrcs")
 	public String deleteMmnrcs(@RequestParam("mmnrcIds") List<String> mmnrcIds) {
 		if (mmnrcIds.isEmpty()) {
@@ -90,15 +131,7 @@ public class MMnrcController {
 		return ResponseEntity.ok(response);
 	}
 
-	@GetMapping("/employee-details/{employeeId}")
-	public String getMMnrcByEmployeeId(@PathVariable Long employeeId, Model model) {
-
-		Employee employee = employeeService.getEmployeeById(employeeId);
-		MMnrc mmnrc = mmNrcService.getMMnrcByMMid(employee.getMmNrc());
-		model.addAttribute("mmnrc", mmnrc);
-		model.addAttribute("employee", employee);
-		return "employeeDetails";
-	}
+	
 
 	@GetMapping("/upload-image")
 	public String showUploadForm(Model model) {

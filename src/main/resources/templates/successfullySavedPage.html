@@ -6,15 +6,22 @@
 	th:href="@{/css/employeeDetails.css}" />
 </head>
 <body>
-	<div th:include="~{'/header.html'}"></div>
+	<div th:insert="~{'/header.html'}"></div>
 	<div class="details-container">
 		<h2>Success!</h2>
-		<p th:text="'Employee ' + ${employee.name} + ' is saved.'"></p>
-		<button onclick="window.location.href='/add-employee'">add
+		<!-- <p th:text="'Employee ' + ${employee.name} + ' is saved.'"></p> -->
+		<p> The record successfully saved.</p>
+		<!-- <button onclick="window.location.href='/add-employee'">add
 			new Employee</button>
 		<button onclick="window.location.href='/get-all-employees'">Show
-			Employee List</button>
-		<button onclick="window.location.href='/home'">Home</button>
+			Employee List</button> -->
+		<button id="home-button"
+			th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}"
+			onclick="window.location.href='/admin/home'">Home</button>
+		<button id="home-button"
+			th:if="${#authorization.expression('hasRole(''ROLE_USER'')')}"
+			onclick="window.location.href='/user/home'">Home</button>
+
 	</div>
 
 </body>
