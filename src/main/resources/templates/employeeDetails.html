@@ -14,33 +14,54 @@
 
 
 		<div class="details-container">
-			<form th:action="@{/admin/edit-employee}" method="get">
-				<p>
-					<b>Employee ID:</b> <span th:text="${employee.id}"></span>
-				</p>
-				<p>
-					<b>MM Nrc ID:</b> <span> <a
-						th:href="@{'/admin/edit-employee?employeeId=' + ${employee.id}}"
-						th:text="${employee.mmNrc}"></a>
-					</span>
-				</p>
-				<p>
-					<b>Name:</b> <span th:text="${employee.name}"></span>
-				</p>
-				<p>
-					<b>Department:</b> <span th:text="${employee.department}"></span>
-				</p>
-				<p>
-					<b>Role:</b> <span th:text="${employee.role}"></span>
-				</p>
+			<div class="grid-container">
+				<div class="details-container">
+					<p>
+						<b>Employee ID:</b>
+					</p>
+					<p>
+						<b>MM Nrc ID:</b>
+					</p>
+					<p>
+						<b>Name:</b>
+					</p>
+					<p>
+						<b>Department:</b>
+					</p>
+					<p>
+						<b>Role:</b>
+					</p>
+				</div>
 
-				<input type="hidden" name="employeeId" th:value="${employee.id}" />
-				<button type="submit" id="edit-button"
-					th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Edit</button>
-			</form>
+				<div class="details-container">
+					<p>
+						<span th:text="${employee.id}"></span>
+					</p>
+					<p>
+						<span> <a
+							th:href="@{'/admin/edit-employee?employeeId=' + ${employee.id}}"
+							th:text="${employee.mmNrc}"></a>
+						</span>
+					</p>
+					<p>
+						<span th:text="${employee.name}"></span>
+					</p>
+					<p>
+						<span th:text="${employee.department}"></span>
+					</p>
+					<p>
+						<span th:text="${employee.role}"></span>
+					</p>
+				</div>
+				<form th:action="@{/admin/edit-employee}" method="get">
+			<input type="hidden" name="employeeId" th:value="${employee.id}" />
+			<button type="submit" id="edit-button"
+				th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Edit</button>
+		</form>
+			</div>
 
 		</div>
-
+		
 		<div class="details-container">
 			<p>
 				<b>MM Nrc ID:</b> <span th:text="${mmnrc.mmId}"></span>

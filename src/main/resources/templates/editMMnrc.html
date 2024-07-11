@@ -37,8 +37,15 @@
 			<label for="dateOfBirth">Date of Birth:</label><br> 
 			<input type="date"
 			id="dateOfBirth" th:field="*{dateOfBirth}"><br>
+			<input type="text" th:field="${mmnrc.dateOfBirth}"  >
+			<!--  <input type="date" id="dateOfBirth" th:field="${*{dateOfBirth}?.format('yyyy-MM-dd')}">
+			-->
+			<input type="date" id="dateOfBirth" value="dateOfBirth">
+
+			
 		<p th:if="${#fields.hasErrors('dateOfBirth')}" th:errorclass="error"
 			th:errors="*{dateOfBirth}" />
+			
 			
 		<label for="cityOfBirthPlace">City of Birth Place:</label><br> <select
 			id="cityOfBirthPlace" th:field="*{cityOfBirthPlace}">

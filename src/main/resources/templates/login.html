@@ -78,6 +78,13 @@ body {
 		<div th:if="${param.error}">
 			<p class="alert alert-danger" role="alert" th:text="${errorMessage}"></p>
 		</div>
+		<div th:if="${param.successMessage}">
+			<p class="alert alert-danger" role="alert" th:text="${infoMessage}"></p>
+		</div>
+		<p>
+			<span th:text="${infoMessage}"></span>  
+		</p>
+		
 		<form th:action="@{/login}" method="post">
 			<div class="form-group">
 				<label for="username">Username:</label> <input type="text"

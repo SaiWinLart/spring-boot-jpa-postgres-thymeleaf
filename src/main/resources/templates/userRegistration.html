@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Registration Form</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/addMMnrc.css}" />
+<script>
+function validateRoles() {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"]');
+    let checkedCount = 0;
+
+    checkboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+            checkedCount++;
+        }
+    });
+
+    if (checkedCount === 0) {
+        alert("Please select at least one role.");
+        return false;
+    }
+
+    return true;
+}
+
+    </script>
+</head>
+<body>
+	<div th:insert="~{'/header.html'}"></div>
+	<div style="padding: 20px;">
+		<h1>User Registration</h1>
+		<p>
+			<span th:text="${successMessage}"></span> <span
+				th:if="${errorMessage}" th:text="${errorMessage}" class="error">Error</span>
+		</p>
+		<form th:action="@{/admin/register-user}" method="POST" th:object="${user}"
+			onsubmit="return validateRoles()">
+		
+			<label for="username">Username:</label><br> <input type="text"
+				th:name="username" required="required" />
+				<p th:if="${#fields.hasErrors('username')}" th:errorclass="error"
+			th:errors="*{username}" />
+			
+			<fieldset style="width: 30%">
+				<legend>Roles Of User:</legend>
+				<!-- <div th:each="role : ${allRoles}">
+				<label> <input type="checkbox" th:name="selectedRoles"
+					th:value="${role.id}" th:text="${role.name}" />
+				</label>
+			</div> -->
+
+				<div>
+					<ul>
+						<li th:each="role : ${allRoles}"><input type="checkbox"
+							th:value="${role}" th:name="selectedRoles" /> <label
+							th:text="${role}"></label></li>
+					</ul>
+				</div>
+			</fieldset>
+
+			<button type="submit">Register</button>
+		</form>
+	</div>
+</body>
+</html>

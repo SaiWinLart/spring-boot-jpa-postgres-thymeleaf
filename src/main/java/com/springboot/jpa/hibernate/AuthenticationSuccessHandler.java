@@ -19,7 +19,7 @@ public class AuthenticationSuccessHandler extends SavedRequestAwareAuthenticatio
 			Authentication authentication) throws ServletException, IOException {
 		boolean isAdmin = authentication.getAuthorities().stream()
 				.anyMatch(grantedAuthority -> grantedAuthority.getAuthority().equals("ROLE_ADMIN"));
-	//	System.out.println(" grantedAuthority.getAuthority()............" + authentication.getAuthorities().toString());
+	 System.out.println(" grantedAuthority.getAuthority()............" + authentication.getAuthorities().toString());
 		String targetUrl;
 		if (isAdmin) {
 

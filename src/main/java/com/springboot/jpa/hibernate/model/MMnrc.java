@@ -2,6 +2,8 @@ package com.springboot.jpa.hibernate.model;
 
 import java.time.LocalDate;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -37,6 +39,7 @@ public class MMnrc {
 	private String motherName;
 	private LocalDate issueDate;
 	@NotNull(message = "Date of birth cannot be null")
+	@DateTimeFormat(pattern = "MM-dd-yyyy")
 	private LocalDate dateOfBirth;
 	@Enumerated(EnumType.ORDINAL)
 	private CityOfBirthPlace cityOfBirthPlace;

@@ -1,10 +1,7 @@
 package com.springboot.jpa.hibernate.model;
 
-import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -20,31 +17,30 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.JoinTable;
 import jakarta.persistence.ManyToMany;
 import jakarta.persistence.Table;
+
+//@Transactional
 @Component
 @Entity
 @Table(name = "users")
 public class User implements UserDetails {
 
-	/** 
-	* 
-	*/
 	private static final long serialVersionUID = 1L;
 
-	 @Id
-	    @GeneratedValue(strategy = GenerationType.IDENTITY)
-	    private Long id;
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	private Long id;
+	@Column(nullable = false, unique = true)
 	private String username;
 	private String password;
 	@Column(name = "account_non_locked")
 	private boolean accountNonLocked;
 	@ManyToMany(fetch = FetchType.EAGER)
-	@JoinTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
-	private List<Role> roles = new ArrayList<Role>();
+	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
+	private List<Role> roles;
 	private int failedAttemptCount;
+
 	public User() {
 	}
- 
-	 
 
 	public User(Long id, String username, String password, boolean accountNonLocked, List<Role> roles,
 			int failedAttemptCount) {
@@ -57,25 +53,17 @@ public class User implements UserDetails {
 		this.failedAttemptCount = failedAttemptCount;
 	}
 
-
-
 	public List<Role> getRoles() {
 		return roles;
 	}
-
-
 
 	public void setRoles(List<Role> roles) {
 		this.roles = roles;
 	}
 
-
-
 	public void setAccountNonLocked(boolean accountNonLocked) {
 		this.accountNonLocked = accountNonLocked;
 	}
-
-
 
 	public Long getId() {
 		return id;
@@ -90,6 +78,12 @@ public class User implements UserDetails {
 		return List.of(() -> "read");
 	}
 
+//	@Override
+//	 public Collection<? extends GrantedAuthority> getAuthorities() {
+//	  String[] userRoles = getRoles().stream().map((role) -> role.getName()).toArray(String[]::new);
+//	        Collection<GrantedAuthority> authorities = AuthorityUtils.createAuthorityList(userRoles);
+//	        return authorities;
+//	 }
 	@Override
 	public String getPassword() {
 		return password;
@@ -135,7 +129,6 @@ public class User implements UserDetails {
 	public boolean getAccountNonLocked() {
 		return accountNonLocked;
 	}
- 
 
 	public int getFailedAttemptCount() {
 		return failedAttemptCount;
@@ -144,7 +137,5 @@ public class User implements UserDetails {
 	public void setFailedAttemptCount(int failedAttemptCount) {
 		this.failedAttemptCount = failedAttemptCount;
 	}
-
-	 
 
 }

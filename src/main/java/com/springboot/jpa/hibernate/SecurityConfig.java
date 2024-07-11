@@ -58,18 +58,37 @@ public class SecurityConfig {
 
 //for MVC
 	//
+//	@Bean
+//	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
+//		return httpSecurity.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(registry -> {
+//			registry.requestMatchers("/").permitAll();
+//			registry.requestMatchers("/user/**").hasRole("USER");
+//			registry.requestMatchers("/user/**").hasRole("ADMIN");
+//			registry.requestMatchers("/admin/**").hasRole("ADMIN");
+//			registry.anyRequest().hasAnyRole("MANAGER"); // Allow manager role
+//      
+//			//registry.anyRequest().authenticated();
+//		}).formLogin(httpSecurityFormLoginConfigurer -> {
+//			httpSecurityFormLoginConfigurer.loginPage("/login").successHandler(new AuthenticationSuccessHandler())
+//					.permitAll();
+//		}).build();
+//	}
+//	
 	@Bean
 	SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
-		return httpSecurity.csrf(AbstractHttpConfigurer::disable).authorizeHttpRequests(registry -> {
-			registry.requestMatchers("/").permitAll();
-			registry.requestMatchers("/user/**").hasRole("USER");
-			registry.requestMatchers("/admin/**").hasRole("ADMIN");
-			registry.anyRequest().authenticated();
+		return httpSecurity.authorizeHttpRequests(registry -> {
+			registry.requestMatchers("/init-admin").permitAll();
+			registry.requestMatchers("/admin/**").hasAnyRole("ADMIN", "MANAGER")
+					.requestMatchers("/user/**").hasAnyRole("USER", "ADMIN", "MANAGER")
+					.requestMatchers("/**").hasAnyRole("USER", "ADMIN", "MANAGER")
+					.anyRequest().hasAnyRole("MANAGER", "ADMIN");
+
 		}).formLogin(httpSecurityFormLoginConfigurer -> {
 			httpSecurityFormLoginConfigurer.loginPage("/login").successHandler(new AuthenticationSuccessHandler())
 					.permitAll();
 		}).build();
 	}
+
 //	private   PasswordEncoder passwordEncoder = PasswordEncoderFactories.createDelegatingPasswordEncoder();
 //
 //	@Bean
@@ -90,12 +109,13 @@ public class SecurityConfig {
 		authenticationProvider.setUserDetailsService(userDetailsService);
 		authenticationProvider.setPasswordEncoder(new BCryptPasswordEncoder());
 		// authenticationProvider.setPasswordEncoder(NoOpPasswordEncoder.getInstance());
-		//System.out.println(".................authProvider..AuthenticationManager...");
+		// System.out.println(".................authProvider..AuthenticationManager...");
 		return authenticationProvider;
 	}
+
 	@Bean
 	public SpringSecurityDialect springSecurityDialect() {
-	    return new SpringSecurityDialect();
+		return new SpringSecurityDialect();
 	}
 
 }
