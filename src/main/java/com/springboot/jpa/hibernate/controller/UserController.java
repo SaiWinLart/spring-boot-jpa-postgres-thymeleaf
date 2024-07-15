@@ -1,9 +1,12 @@
 package com.springboot.jpa.hibernate.controller;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.stream.Collectors;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -19,8 +22,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import com.springboot.jpa.hibernate.model.CsvUserDto;
 import com.springboot.jpa.hibernate.model.Role;
 import com.springboot.jpa.hibernate.model.User;
+import com.springboot.jpa.hibernate.service.CsvExportUtil;
 import com.springboot.jpa.hibernate.service.MyUserDetailsService;
 import com.springboot.jpa.hibernate.service.UserPrincipal;
 
@@ -309,16 +314,26 @@ public class UserController {
 		return userDetailsManager.createRole(role);
 	}
 
-	@ModelAttribute("allRoles")
-	public List<Role> populateRoles() {
-		return userDetailsManager.getAllrole();
+	@Autowired
+	private CsvExportUtil csvExportUtil;
+
+	@GetMapping("/admin/downloadUsers-csv")
+	public void downloadCsv(HttpServletResponse response) throws IOException {
+		response.setContentType("text/csv");
+		response.setHeader("Content-Disposition", "attachment; filename=users.csv");
+		List<CsvUserDto> userDataList = transferUserData(userDetailsManager.getAllUsers());
+
+		userDetailsManager.getAllUsers();
+		csvExportUtil.writeUsersToCsv(response.getWriter(), userDataList);
 	}
 
-// get all role from Enum	
-//	@ModelAttribute("allRoles")
-//	public Roles[] populateRoles() {
-//		return Roles.values();
-//	}
+	public List<CsvUserDto> transferUserData(List<User> userList) {
+		return userList.stream()
+				.map(user -> new CsvUserDto(user.getId(), user.getUsername(), user.getPassword(),
+						user.isAccountNonLocked(), user.getRoles().stream().map(Role::getName).collect(Collectors.toList()),  user.getFailedAttemptCount(),
+						user.isNeedsPasswordChange()))
+				.collect(Collectors.toList());
+	}
 
 	private String getErrorMessage(HttpServletRequest request, String key) {
 		Exception exception = (Exception) request.getSession().getAttribute(key);
@@ -332,5 +347,16 @@ public class UserController {
 				error = exception.getMessage();
 		}
 		return error;
+	}
+
+	// get all role from Enum
+//		@ModelAttribute("allRoles")
+//		public Roles[] populateRoles() {
+//			return Roles.values();
+//		}
+
+	@ModelAttribute("allRoles")
+	public List<Role> populateRoles() {
+		return userDetailsManager.getAllrole();
 	}
 }
