@@ -8,7 +8,8 @@
 </head>
 <body>
 	<div class="user-info">
-		Logged in as: <span th:text="${#authentication.name}"></span><br>
+		<!-- Logged in as: <span th:text="${#authentication.getPrincipal().getUsername()}"></span><br> -->
+		Logged in as: <span th:text="${loginUsername}"></span><br>
 		Role: <span th:text="${#authentication.authorities}"></span>
 	</div>
 <div class="buttons">

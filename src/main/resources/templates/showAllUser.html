@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>User List</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/userList.css}" />
+</head>
+<body class="container">
+	<div th:insert="~{'/header.html'}"></div>
+
+	<div class="container">
+		<h1>User List</h1>
+	</div>
+	<p>
+		<span th:if="${infoMessage}" th:text="${infoMessage}"></span>
+	</p>
+	<table>
+		<thead>
+			<tr>
+				<th>ID</th>
+				<th>Username</th>
+				<th>Change Password Require</th>
+				<th>Account Non Locked</th>
+				<th>Roles</th>
+				<th>Failed Attempts</th>
+			</tr>
+		</thead>
+		<tbody>
+
+			<tr th:each="user : ${usersList}">
+				<td><a th:href="@{'/admin/user-details?userId=' + ${user.id}}"
+					th:text="${user.id}"></a></td>
+				<td th:text="${user.username}"></td>
+				<td th:text="${user.needsPasswordChange}"></td>
+				<td th:text="${user.accountNonLocked}"></td>
+				<td><span th:each="role, iter : ${user.roles}"> <span
+						th:text="${role.name}"></span> <span th:if="${!iter.last}">,
+					</span>
+				</span></td>
+				<td th:text="${user.failedAttemptCount}"></td>
+			</tr>
+		</tbody>
+	</table>
+
+</body>
+</html>

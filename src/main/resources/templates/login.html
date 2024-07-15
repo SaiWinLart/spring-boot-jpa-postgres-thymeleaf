@@ -67,7 +67,13 @@ body {
 
 .alert-danger {
 	color: #a94442;
-	background-color: #f2dede;
+	background-color: rgb(192, 192, 192);
+	border-color: #ebccd1;
+}
+
+.alert-info {
+	color: #a94442;
+	background-color: lightblue;
 	border-color: #ebccd1;
 }
 </style>
@@ -78,13 +84,10 @@ body {
 		<div th:if="${param.error}">
 			<p class="alert alert-danger" role="alert" th:text="${errorMessage}"></p>
 		</div>
-		<div th:if="${param.successMessage}">
-			<p class="alert alert-danger" role="alert" th:text="${infoMessage}"></p>
+		<div th:if="${infoMessage}">
+			<p class="alert alert-info" role="alert" th:text="${infoMessage}"></p>
 		</div>
-		<p>
-			<span th:text="${infoMessage}"></span>  
-		</p>
-		
+		 
 		<form th:action="@{/login}" method="post">
 			<div class="form-group">
 				<label for="username">Username:</label> <input type="text"

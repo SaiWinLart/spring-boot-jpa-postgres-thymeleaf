@@ -1,9 +1,9 @@
 package com.springboot.jpa.hibernate.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.security.authentication.LockedException;
-import org.springframework.security.core.authority.AuthorityUtils;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -21,7 +21,7 @@ public class MyUserDetailsService implements UserDetailsService {
 	private final IUserRepository userRepository;
 	private final IRoleRepository roleRepository;
 
-	public MyUserDetailsService(IUserRepository userRepository,IRoleRepository roleRepository) {
+	public MyUserDetailsService(IUserRepository userRepository, IRoleRepository roleRepository) {
 		this.userRepository = userRepository;
 		this.roleRepository = roleRepository;
 	}
@@ -31,10 +31,39 @@ public class MyUserDetailsService implements UserDetailsService {
 
 	}
 
+	public List<User> getAllUsers() {
+
+		return userRepository.findAll();
+	}
+
+	public User getUserById(Long id) {
+
+		Optional<User> optional = userRepository.findById(id);
+		User user = null;
+		if (optional.isPresent()) {
+			user = optional.get();
+		} else {
+			throw new RuntimeException(" User not found for id :: " + id);
+		}
+		return user;
+	}
+	
+	public User getUserByusername(String username) {
+
+		Optional<User> optional = userRepository.findByUsername(username);
+		User user = null;
+		if (optional.isPresent()) {
+			user = optional.get();
+		} else {
+			throw new RuntimeException("User not found for username :: " + username);
+		}
+		return user;
+	}
+
 	public Role createRole(Role role) {
 		return roleRepository.save(role);
-
 	}
+
 	public List<Role> getAllrole() {
 		return userRepository.findAllRole();
 	}
@@ -42,8 +71,8 @@ public class MyUserDetailsService implements UserDetailsService {
 	public Role getRoleById(Long id) {
 		return userRepository.findRoleById(id);
 	}
-	
-	public  Role  getRoleByName(String roleName) {
+
+	public Role getRoleByName(String roleName) {
 		return roleRepository.findByName(roleName);
 	}
 
@@ -60,10 +89,19 @@ public class MyUserDetailsService implements UserDetailsService {
 		} else {
 //			reSetFailedAttemptCount(user);
 		}
+//		org.springframework.security.core.userdetails.User customUser = new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
+//				user.isEnabled(), true, true, user.getAccountNonLocked(),
+//				AuthorityUtils.createAuthorityList(user.getRoles().stream().map(Role::getName).toArray(String[]::new)));
+//	 
+//	  user.setId(1L);
+//      user.setUsername("admin");
+//      user.setPassword("admin");
+//      user.setAccountNonLocked(true);
+//      user.setRoles(roleRepository.findAllRole());
+//      user.setFailedAttemptCount(0);
+//      user.setNeedsPasswordChange(false);
 
-		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-				user.isEnabled(), true, true, user.getAccountNonLocked(),
-				AuthorityUtils.createAuthorityList(user.getRoles().stream().map(Role::getName).toArray(String[]::new)));
+		return new UserPrincipal(user);
 	}
 
 	private void lockUserAccount(User user) {

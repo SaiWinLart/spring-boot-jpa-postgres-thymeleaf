@@ -5,9 +5,13 @@
 </head>
 <body>
 	 <div th:insert="~{'/header.html'}"></div>
+	 <a th:href="@{/change-password}">Change-password</a>
+	<br />
 	<a th:href="@{/admin/add-employee}">Add New Employee</a>
 	<br />
-	<a th:href="@{/admin/add-mmnrc}">Add New MM Nrc</a>
+	<a th:href="@{/admin/add-mmnrc}">Add New MM Nrc</a> 
+	<br />
+	<a th:href="@{/admin/register-role}">Register new role</a>
 	<br />
 	<a th:href="@{/admin/register-user}">Register new user</a>
 	<br />
@@ -15,9 +19,11 @@
 	<br />
 	<a th:href="@{/show-image}">View Image</a>
 	<br />
-	<a th:href="@{/get-all-employees}">Show Employee List</a>
+	<a th:href="@{/get-all-employees}">Show Employees List</a>
 	<br />
 	<a th:href="@{/get-all-mmnrcs}">Show MM Nrc List</a>
+	<br /> 
+	<a th:href="@{/admin/get-all-users}">Show Users List</a>
 	<br /> 
 </body>
 </html>

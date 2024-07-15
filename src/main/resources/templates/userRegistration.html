@@ -51,8 +51,8 @@ function validateRoles() {
 				<div>
 					<ul>
 						<li th:each="role : ${allRoles}"><input type="checkbox"
-							th:value="${role}" th:name="selectedRoles" /> <label
-							th:text="${role}"></label></li>
+							th:value="${role.name}" th:name="selectedRoles" /> <label
+							th:text="${role.name}"></label></li>
 					</ul>
 				</div>
 			</fieldset>

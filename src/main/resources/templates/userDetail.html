@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>User Details</title>
+<style>
+.details-container {
+	display: flex;
+	justify-content: space-between; 
+	background-color: #ffffff; /* White background */
+	padding: 5px; 
+	width:40%;
+	
+}
+body {
+	background-color: #f0f8ea; /* Light green background */
+	font-family: Arial, sans-serif;
+	border-radius: 10px;
+	padding: 5px;
+	border: medium;
+	border-color: green;
+}
+.label {
+	font-weight: bold;
+}
+
+.output-text {
+	text-align: left;
+	color: green;
+}
+</style>
+</head>
+<body>
+	<div th:insert="~{'/header.html'}"></div>
+	<h1>User Details</h1>
+	<div class="details-container">
+		<div class="label">ID:</div>
+		<div>
+			<span th:text="${user.id}"></span>
+		</div>
+	</div>
+	<div class="details-container">
+		<div class="label">Username:</div>
+		<div class="output-text">
+			<span th:text="${user.username}"></span>
+		</div>
+	</div>
+	<div class="details-container">
+		<div class="label">Account Non Locked:</div>
+		<div class="output-text">
+			<span th:text="${user.accountNonLocked}"></span>
+		</div>
+	</div>
+	
+	<div class="details-container">
+		<div class="label">Change Password Require:</div>
+		<div class="output-text">
+			<span th:text="${user.needsPasswordChange}"></span>
+		</div>
+	</div>
+	<div class="details-container">
+		<div class="label">Roles:</div>
+		<div class="output-text">
+			<span th:each="role, iter : ${user.roles}"> <span
+				th:text="${role.name}"></span> <span th:if="${!iter.last}">,
+			</span>
+			</span>
+		</div>
+	</div>
+	<div class="details-container">
+		<div class="label">Failed Attempts:</div>
+		<div class="output-text">
+			<span th:text="${user.failedAttemptCount}"></span>
+		</div>
+	</div>
+
+	<!-- <div class="flex-container"> -->
+	<div class="grid-container">
+
+
+		<form th:action="@{/admin/edit-user}" method="get">
+			<input type="hidden" name="userId" th:value="${user.id}" />
+			<button type="submit" id="edit-button"
+				th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Edit</button>
+		</form>
+		
+		<form th:action="@{/admin/reset-user-password}" method="post">
+			<input type="hidden" name="userId" th:value="${user.id}" />
+			<button type="submit" id="reset-password"
+				th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Reset password</button>
+		</form>
+	</div>
+
+</body>
+
+
+</html>

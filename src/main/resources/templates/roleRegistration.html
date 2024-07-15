@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Registration Form</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/addMMnrc.css}" />
+</head>
+<body>
+	<div th:insert="~{'/header.html'}"></div>
+	<div style="padding: 20px;">
+		<h1>Role Registration</h1>
+		<p>
+			<span th:text="${successMessage}"></span> <span
+				th:if="${errorMessage}" th:text="${errorMessage}" class="error">Error</span>
+		</p>
+		<form th:action="@{/admin/register-role}" method="POST">
+
+
+			<fieldset style="width: 30%">
+				<legend>Roles Of User:</legend>
+				<label for="role">Role name:</label><br> <input type="text"
+					th:name="roleName" required="required" />
+				<p th:if="${#fields.hasErrors('roleName')}" th:errorclass="error"
+					th:errors="*{roleName}" />
+
+			</fieldset>
+
+			<button type="submit">Register</button>
+		</form>
+	</div>
+</body>
+</html>

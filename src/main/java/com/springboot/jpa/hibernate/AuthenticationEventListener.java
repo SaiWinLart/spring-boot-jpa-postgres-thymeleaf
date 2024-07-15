@@ -1,4 +1,4 @@
-package com.springboot.jpa.hibernate.service;
+package com.springboot.jpa.hibernate;
 
 import java.util.Optional;
 
@@ -10,6 +10,9 @@ import org.springframework.stereotype.Component;
 
 import com.springboot.jpa.hibernate.model.User;
 import com.springboot.jpa.hibernate.respository.IUserRepository;
+import com.springboot.jpa.hibernate.service.UserPrincipal;
+
+import jakarta.servlet.http.HttpSession;
 
 @Component
 public class AuthenticationEventListener {
@@ -21,15 +24,17 @@ public class AuthenticationEventListener {
 
 	@EventListener
 	public void authenticationFailed(AuthenticationFailureBadCredentialsEvent event) {
-		String username = (String) event.getAuthentication().getPrincipal();
+		 String username = (String) event.getAuthentication().getPrincipal();
+		//UserPrincipal loginUser = (UserPrincipal) event.getAuthentication().getPrincipal();
 		updateFailedAttemptCount(username);
-
+		
 	}
 
 	@EventListener
 	public void authenticationSucceeded(AuthenticationSuccessEvent event) {
-		UserDetails userDetails = (UserDetails) event.getAuthentication().getPrincipal();
-		resetFailedAttemptCount(userDetails.getUsername());
+		//UserDetails userDetails = (UserDetails) event.getAuthentication().getPrincipal(); 
+		UserPrincipal loginUser = (UserPrincipal) event.getAuthentication().getPrincipal(); 
+		resetFailedAttemptCount(loginUser.getUser().getUsername());
 	}
 
 	public void updateFailedAttemptCount(String username) {

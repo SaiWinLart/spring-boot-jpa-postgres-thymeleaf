@@ -38,12 +38,14 @@ public class User implements UserDetails {
 	@JoinTable(name = "users_roles", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "role_id"))
 	private List<Role> roles;
 	private int failedAttemptCount;
-
+	private boolean needsPasswordChange;
 	public User() {
 	}
 
+	 
+
 	public User(Long id, String username, String password, boolean accountNonLocked, List<Role> roles,
-			int failedAttemptCount) {
+			int failedAttemptCount, boolean needsPasswordChange) {
 		super();
 		this.id = id;
 		this.username = username;
@@ -51,7 +53,10 @@ public class User implements UserDetails {
 		this.accountNonLocked = accountNonLocked;
 		this.roles = roles;
 		this.failedAttemptCount = failedAttemptCount;
+		this.needsPasswordChange = needsPasswordChange;
 	}
+
+
 
 	public List<Role> getRoles() {
 		return roles;
@@ -136,6 +141,14 @@ public class User implements UserDetails {
 
 	public void setFailedAttemptCount(int failedAttemptCount) {
 		this.failedAttemptCount = failedAttemptCount;
+	}
+
+	public boolean isNeedsPasswordChange() {
+		return needsPasswordChange;
+	}
+
+	public void setNeedsPasswordChange(boolean needsPasswordChange) {
+		this.needsPasswordChange = needsPasswordChange;
 	}
 
 }

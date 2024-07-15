@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Edit User Form</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/addMMnrc.css}" />
+<script>
+function validateRoles() {
+    const checkboxes = document.querySelectorAll('input[type="checkbox"][name="selectedRoles"]');
+    let checkedCount = 0;
+
+    checkboxes.forEach((checkbox) => {
+        if (checkbox.checked) {
+            checkedCount++;
+        }
+    });
+
+    if (checkedCount === 0) {
+        alert("Please select at least one role.");
+        return false;
+    }
+
+    return true;
+}
+
+    </script>
+</head>
+<body>
+	<div th:insert="~{'/header.html'}"></div>
+	<div style="padding: 20px;">
+		<h1>Edit User</h1>
+		<p>
+			<span th:text="${successMessage}"></span> <span
+				th:if="${errorMessage}" th:text="${errorMessage}" class="error">Error</span>
+		</p>
+		<form th:action="@{/admin/edit-user}" method="POST"
+			th:object="${user}" onsubmit="return validateRoles()">
+
+			<label for="username">Username:</label><br> <input type="text"
+				id="username" th:field="*{username}" required="required"><br>
+
+			<p th:if="${#fields.hasErrors('username')}" th:errorclass="error"
+				th:errors="*{username}" />
+			<div class="label">Change Password Require:</div>
+			<div>
+				<input type="checkbox" th:name="needsPasswordChange"
+					th:checked="${user.needsPasswordChange}">
+			</div>
+			<div class="label">Account Non Locked:</div>
+			<div>
+				<input type="checkbox" th:name="accountNonLocked"
+					th:checked="${user.accountNonLocked}">
+			</div>
+			<div class="label">Failed Attempts:</div>
+			<div>
+				<input type="text" th:name="feildAttemptCount"
+					th:value="${user.failedAttemptCount}">
+			</div>
+			<input type="hidden" th:field="*{id}" /> <input type="hidden"
+				th:field="*{password}" />
+
+			<fieldset style="width: 30%">
+				<legend>Roles of User:</legend>
+
+				<div>
+					<ul>
+						<li th:each="role : ${allRoles}"><input type="checkbox"
+							th:value="${role.name}" th:name="selectedRoles"
+							th:checked="${#lists.contains(user.roles, role)}" /> <label
+							th:text="${role.name}"></label></li>
+					</ul>
+				</div>
+
+			</fieldset>
+
+			<button type="submit">Update</button>
+		</form>
+	</div>
+</body>
+</html>
