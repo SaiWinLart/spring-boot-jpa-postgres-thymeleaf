@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.LockedException;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import com.springboot.jpa.hibernate.model.CsvUserDto;
@@ -27,6 +29,7 @@ import com.springboot.jpa.hibernate.model.Role;
 import com.springboot.jpa.hibernate.model.User;
 import com.springboot.jpa.hibernate.service.CsvExportUtil;
 import com.springboot.jpa.hibernate.service.MyUserDetailsService;
+import com.springboot.jpa.hibernate.service.PdfExportUtil;
 import com.springboot.jpa.hibernate.service.UserPrincipal;
 
 import jakarta.servlet.http.Cookie;
@@ -42,6 +45,12 @@ public class UserController {
 	private MyUserDetailsService userDetailsManager;
 	private BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 	private String defaultAdminPassword = "admin";
+
+	@Autowired
+	private PdfExportUtil pdfExportUtil;
+
+	@Autowired
+	private CsvExportUtil csvExportUtil;
 
 	public UserController(MyUserDetailsService userDetailsManager) {
 		super();
@@ -138,11 +147,78 @@ public class UserController {
 		return "login";
 	}
 
+//	@GetMapping("/admin/get-all-users")
+//	public String showAllUser(Model model) {
+//		List<User> usersList = userDetailsManager.getAllUsers();
+//		model.addAttribute("usersList", usersList);
+//		return "showAllUser";
+//	}
+
 	@GetMapping("/admin/get-all-users")
-	public String showAllUser(Model model) {
-		List<User> usersList = userDetailsManager.getAllUsers();
+	public String getUsers(Model model, @RequestParam(defaultValue = "0") int page,
+			@RequestParam(defaultValue = "10") int size, @RequestParam(defaultValue = "username") String sortColumn,
+			@RequestParam(defaultValue = "asc") String sortDirection) {
+
+		Page<User> usersList = userDetailsManager.getUsers(page, size, sortColumn, sortDirection);
 		model.addAttribute("usersList", usersList);
-		return "showAllUser";
+		model.addAttribute("currentPage", page);
+		model.addAttribute("totalPages", usersList.getTotalPages());
+		model.addAttribute("sortColumn", sortColumn);
+		model.addAttribute("sortDirection", sortDirection);
+
+		return "showAllUserPage";
+	}
+
+	@GetMapping("/admin/downloadUsers-csv")
+	public String downloadCsv(HttpServletResponse response, RedirectAttributes redirectAttributes) throws IOException {
+
+		try {
+			response.setContentType("text/csv");
+			response.setHeader("Content-Disposition", "attachment; filename=users.csv");
+
+			List<User> users = userDetailsManager.getAllUsers();
+
+			csvExportUtil.exportUsersToCsv(response.getWriter(), users);
+			redirectAttributes.addFlashAttribute("infoMessage", "CSV download successfully");
+			return "redirect:/admin/get-all-users";
+		} catch (IOException e) {
+
+			redirectAttributes.addFlashAttribute("errorMessage", "Error exporting CSV: " + e.getMessage());
+
+			return "redirect:/admin/get-all-users";
+		}
+	}
+
+	public List<CsvUserDto> transferUserData(List<User> userList) {
+		return userList.stream().map(user -> new CsvUserDto(user.getId(), user.getUsername(), user.getPassword(),
+				user.isAccountNonLocked(), user.getRoles().stream().map(Role::getName).collect(Collectors.toList()),
+				user.getFailedAttemptCount(), user.isNeedsPasswordChange())).collect(Collectors.toList());
+	}
+
+	@GetMapping("/admin/downloadUsers-pdf")
+	public String downloadPdf(HttpServletResponse response, RedirectAttributes redirectAttributes) throws IOException {
+		response.setContentType("application/pdf");
+		response.setHeader("Content-Disposition", "attachment; filename=users.pdf");
+		pdfExportUtil.writeUsersToPdf(response, userDetailsManager.getAllUsers());
+		redirectAttributes.addFlashAttribute("infoMessage", "PDF file download successfully.");
+		return "redirect:/admin/get-all-users";
+	}
+
+	@PostMapping("/admin/importUsers-csv")
+	public String importCsv(MultipartFile file, Model model, RedirectAttributes redirectAttributes) throws IOException {
+
+		try {
+			userDetailsManager.importUsersCSV(file);
+
+			redirectAttributes.addFlashAttribute("infoMessage", "CSV imported successfully");
+			return "redirect:/admin/get-all-users";
+		} catch (Exception e) {
+
+			redirectAttributes.addFlashAttribute("errorMessage", "Error importing CSV: " + e.getMessage());
+
+			return "redirect:/admin/get-all-users";
+		}
+
 	}
 
 	@GetMapping("/admin/user-details")
@@ -312,27 +388,6 @@ public class UserController {
 		Role role = new Role();
 		role.setName(roleName);
 		return userDetailsManager.createRole(role);
-	}
-
-	@Autowired
-	private CsvExportUtil csvExportUtil;
-
-	@GetMapping("/admin/downloadUsers-csv")
-	public void downloadCsv(HttpServletResponse response) throws IOException {
-		response.setContentType("text/csv");
-		response.setHeader("Content-Disposition", "attachment; filename=users.csv");
-		List<CsvUserDto> userDataList = transferUserData(userDetailsManager.getAllUsers());
-
-		userDetailsManager.getAllUsers();
-		csvExportUtil.writeUsersToCsv(response.getWriter(), userDataList);
-	}
-
-	public List<CsvUserDto> transferUserData(List<User> userList) {
-		return userList.stream()
-				.map(user -> new CsvUserDto(user.getId(), user.getUsername(), user.getPassword(),
-						user.isAccountNonLocked(), user.getRoles().stream().map(Role::getName).collect(Collectors.toList()),  user.getFailedAttemptCount(),
-						user.isNeedsPasswordChange()))
-				.collect(Collectors.toList());
 	}
 
 	private String getErrorMessage(HttpServletRequest request, String key) {

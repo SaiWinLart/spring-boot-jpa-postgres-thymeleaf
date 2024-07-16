@@ -13,7 +13,8 @@
 		<h1>User List</h1>
 	</div>
 	<p>
-		<span th:if="${infoMessage}" th:text="${infoMessage}"></span>
+		<span th:if="${infoMessage}" th:text="${infoMessage}"></span> <span
+			th:if="${errorMessage}" th:text="${errorMessage}"></span>
 	</p>
 	<table>
 		<thead>
@@ -42,10 +43,26 @@
 			</tr>
 		</tbody>
 	</table>
-		<form th:action="@{/admin/downloadUsers-csv}" method="get">
-			 
-			<button type="submit" id="download-button"
-				th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Download Users CSV</button>
-		</form>
+	<form th:action="@{/admin/downloadUsers-csv}" method="get">
+
+		<button type="submit" id="download-button"
+			th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Download
+			Users CSV</button>
+	</form>
+
+	<form th:action="@{/admin/downloadUsers-pdf}" method="get">
+
+		<button type="submit" id="download-button"
+			th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Download
+			Users PDF</button>
+	</form>
+	<form th:action="@{/admin/importUsers-csv}" method="post"
+		enctype="multipart/form-data">
+		<input type="file" name="file" />
+		<button type="submit"
+			th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Import
+			Users CSV</button>
+	</form>
+
 </body>
 </html>

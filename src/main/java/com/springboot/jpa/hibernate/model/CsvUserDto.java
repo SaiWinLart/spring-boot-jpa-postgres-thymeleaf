@@ -3,6 +3,7 @@ package com.springboot.jpa.hibernate.model;
 import java.util.List;
 
 import com.opencsv.bean.CsvBindByName;
+ 
 
 public class CsvUserDto {
  
@@ -21,6 +22,17 @@ public class CsvUserDto {
 	@CsvBindByName
 	private boolean needsPasswordChange;
 	
+	public CsvUserDto(Long id, String username, String password, boolean accountNonLocked, List<String> roles,
+			int failedAttemptCount, boolean needsPasswordChange) {
+		super();
+		this.id = id;
+		this.username = username;
+		this.password = password;
+		this.accountNonLocked = accountNonLocked;
+		this.roles = roles;
+		this.failedAttemptCount = failedAttemptCount;
+		this.needsPasswordChange = needsPasswordChange;
+	}
 	public Long getId() {
 		return id;
 	}
@@ -63,25 +75,8 @@ public class CsvUserDto {
 	public void setNeedsPasswordChange(boolean needsPasswordChange) {
 		this.needsPasswordChange = needsPasswordChange;
 	}
-//	public CsvUserDtoc(Long id, String username, String password, boolean accountNonLocked, List<String> roles,
-//			int failedAttemptCount, boolean needsPasswordChange) {
-//		super();
-//		this.id = id;
-//		this.username = username;
-//		this.password = password;
-//		this.accountNonLocked = accountNonLocked;
-//		this.roles = roles;
-//		this.failedAttemptCount = failedAttemptCount;
-//		this.needsPasswordChange = needsPasswordChange;
-//	}
-	public CsvUserDto(Long id, String username, String password, boolean accountNonLocked, List<String> roles,
- 		int failedAttemptCount, boolean needsPasswordChange) {
-		this.id = id;
-		this.username = username;
-		this.password = password;
-		this.accountNonLocked = accountNonLocked;
-		this.roles = roles;
-		this.failedAttemptCount = failedAttemptCount;
-		this.needsPasswordChange = needsPasswordChange;
+	public CsvUserDto() {
+		super(); 
 	}
+  
 }

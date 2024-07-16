@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:th="http://www.thymeleaf.org">
+<head>
+<meta charset="UTF-8" />
+<title>User List</title>
+<link rel="stylesheet" type="text/css" th:href="@{/css/userList.css}" />
+</head>
+<body class="container">
+	<div th:insert="~{'/header.html'}"></div>
+	<br>
+	<div class="button-row">
+		<form th:action="@{/admin/downloadUsers-csv}" method="get">
+			<button type="submit" id="download-button"
+				th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Download
+				Users CSV</button>
+		</form>
+		<form th:action="@{/admin/downloadUsers-pdf}" method="get">
+			<button type="submit" id="download-button"
+				th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Download
+				Users PDF</button>
+		</form>
+		<form th:action="@{/admin/importUsers-csv}" method="post"
+			enctype="multipart/form-data">
+			<input type="file" name="file" />
+			<button type="submit"
+				th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Import
+				Users CSV</button>
+		</form>
+	</div>
+	<div>
+		<p>
+			<span class="message-row" th:if="${infoMessage}"
+				th:text="${infoMessage}"></span> <span class="message-row"
+				th:if="${errorMessage}" th:text="${errorMessage}"></span>
+		</p>
+	</div>
+	<table>
+		<thead>
+			<tr>
+				<th>
+					<button type="button" onclick="sort('id')">
+						ID <span id="sortIconId"></span>
+					</button>
+				</th>
+				<th>
+					<button type="button" onclick="sort('username')">
+						Username <span id="sortIconUsername"></span>
+					</button>
+				</th>
+				<th>Needs Password Change</th>
+				<th>Account Locked</th>
+				<th>Roles</th>
+				<th>Failed Attempts</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="user : ${usersList}">
+				<td><a th:href="@{'/admin/user-details?userId=' + ${user.id}}"
+					th:text="${user.id}"></a></td>
+				<td th:text="${user.username}"></td>
+				<td th:text="${user.needsPasswordChange}"></td>
+				<td th:text="${user.accountNonLocked}"></td>
+				<td><span th:each="role, iter : ${user.roles}"> <span
+						th:text="${role.name}"></span> <span th:if="${!iter.last}">,
+					</span>
+				</span></td>
+				<td th:text="${user.failedAttemptCount}"></td>
+			</tr>
+		</tbody>
+	</table>
+
+	<div th:if="${totalPages > 1}">
+		<a
+			th:href="@{/admin/get-all-users(page=${currentPage-1}, size=${size}, sortColumn=${sortColumn}, sortDirection=${sortDirection})}"
+			th:if="${currentPage > 0}">Previous</a> <span
+			th:text="${currentPage + 1}"></span> of <span th:text="${totalPages}"></span>
+		<a
+			th:href="@{/admin/get-all-users(page=${currentPage+1}, size=${size}, sortColumn=${sortColumn}, sortDirection=${sortDirection})}"
+			th:if="${currentPage < totalPages - 1}">Next</a>
+	</div>
+
+	<script>
+		function sort(column) {
+			let sortDirection = document.getElementById('sortDirection').value;
+			sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+			document.getElementById('sortDirection').value = sortDirection;
+
+			// Update sort icon based on sort direction and column
+			const sortIconId = document.getElementById('sortIconId');
+			const sortIconUsername = document
+					.getElementById('sortIconUsername');
+			if (column === 'id') {
+				sortIconId.innerHTML = sortDirection === 'asc' ? '▲' : '▼';
+				sortIconUsername.innerHTML = '';
+			} else if (column === 'username') {
+				sortIconUsername.innerHTML = sortDirection === 'asc' ? '▲'
+						: '▼';
+				sortIconId.innerHTML = '';
+			}
+
+			window.location.href = `/admin/get-all-users?page=0&size=10&sortColumn=${column}&sortDirection=${sortDirection}`;
+		}
+	</script>
+	<input type="hidden" id="sortDirection" th:value="${sortDirection}">
+</body>
+</html>

@@ -1,0 +1,21 @@
+id,username,password,accountNonLocked,roles,failedAttemptCount,needsPasswordChange
+58,user10,$2a$10$YwaUd6EOSgv9D6K36MyyMO664zHJmBZUu1VOd0xJzVCqlx1oeCGfK,true,ROLE_ADMIN,0,false
+59,user11,$2a$10$9v/A5Es5d5Dc8KBY40nYbe.mmkEoGkwDkWUgQ9hJswmKOYO/EakEW,true,ROLE_USER,0,false
+60,user12,$2a$10$SWO5kDGpmISoyhEA1xKDyuGboaOABK25muoMJz3Cr3SbWms91Ptvu,true,"ROLE_USER, ROLE_SUPER",0,true
+61,user13,$2a$10$mWlaHkgacHwlH00PF9oRbOfp/mK9Egbh4pZl1kLAVt2PhOL8NERZe,true,ROLE_ADMIN,0,false
+62,user14,$2a$10$Ec2iCL7Pr22Nzx4M.Xiw4Olg88sm5M/bc5WUHNkYDkKtlrqQP2Qz.,true,ROLE_ADMIN,0,false
+63,user15,$2a$10$HeUUCzRSoHTy0bv7q7/40eOj0p4t.NAcDwWJvr7LHXF5GnwqaFJd.,true,"ROLE_USER, ROLE_SUPER",0,false
+64,user16,$2a$10$1regbq0IiUFWSk5BOCb0C.Yu42dXAvAzOBVqSxfLBJruGPQnz.ErG,true,ROLE_USER,0,true
+65,user17,$2a$10$1regbq0IiUFWSk5BOCb0C.Yu42dXAvAzOBVqSxfLBJruGPQnz.ErG,true,ROLE_USER,0,true
+66,user18,$2a$10$1regbq0IiUFWSk5BOCb0C.Yu42dXAvAzOBVqSxfLBJruGPQnz.ErG,true,ROLE_USER,0,true
+67,user19,$2a$10$1regbq0IiUFWSk5BOCb0C.Yu42dXAvAzOBVqSxfLBJruGPQnz.ErG,true,ROLE_USER,0,true
+68,user20,$2a$10$1regbq0IiUFWSk5BOCb0C.Yu42dXAvAzOBVqSxfLBJruGPQnz.ErG,true,ROLE_USER,0,true
+69,user21,$2a$10$1regbq0IiUFWSk5BOCb0C.Yu42dXAvAzOBVqSxfLBJruGPQnz.ErG,true,ROLE_USER,0,true
+70,user22,$2a$10$1regbq0IiUFWSk5BOCb0C.Yu42dXAvAzOBVqSxfLBJruGPQnz.ErG,true,ROLE_USER,0,true
+71,user23,$2a$10$1regbq0IiUFWSk5BOCb0C.Yu42dXAvAzOBVqSxfLBJruGPQnz.ErG,true,ROLE_USER,0,true
+72,user24,$2a$10$1regbq0IiUFWSk5BOCb0C.Yu42dXAvAzOBVqSxfLBJruGPQnz.ErG,true,ROLE_USER,0,true
+73,user25,$2a$10$1regbq0IiUFWSk5BOCb0C.Yu42dXAvAzOBVqSxfLBJruGPQnz.ErG,true,ROLE_USER,0,true
+74,user26,$2a$10$1regbq0IiUFWSk5BOCb0C.Yu42dXAvAzOBVqSxfLBJruGPQnz.ErG,true,ROLE_USER,0,true
+75,user27,$2a$10$1regbq0IiUFWSk5BOCb0C.Yu42dXAvAzOBVqSxfLBJruGPQnz.ErG,true,ROLE_USER,0,true
+76,user28,$2a$10$1regbq0IiUFWSk5BOCb0C.Yu42dXAvAzOBVqSxfLBJruGPQnz.ErG,true,ROLE_USER,0,true
+77,admin,$2a$10$AF5P3r5vEEbRTVhF2cX/suwa3JwpNxk1/GhP.DANcU55l6d1eq0GK,true,ROLE_ADMIN,0,false
