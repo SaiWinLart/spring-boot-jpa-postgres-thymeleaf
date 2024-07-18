@@ -16,7 +16,7 @@
 				Users CSV</button>
 		</form>
 		<form th:action="@{/admin/downloadUsers-pdf}" method="get">
-			<button type="submit" id="download-button"
+			<button type="submit" id="download-button" onclick="downloadPdf()"
 				th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Download
 				Users PDF</button>
 		</form>
@@ -30,7 +30,7 @@
 	</div>
 	<div>
 		<p>
-			<span class="message-row" th:if="${infoMessage}"
+			<span class="message-row" th:if="${infoMessage != null}"
 				th:text="${infoMessage}"></span> <span class="message-row"
 				th:if="${errorMessage}" th:text="${errorMessage}"></span>
 		</p>
@@ -101,6 +101,20 @@
 
 			window.location.href = `/admin/get-all-users?page=0&size=10&sortColumn=${column}&sortDirection=${sortDirection}`;
 		}
+		
+		
+		function downloadPdf() {
+            var iframe = document.createElement('iframe');
+            iframe.style.display = 'none';
+            iframe.src = '/admin/get-all-users';
+            document.body.appendChild(iframe);
+
+            iframe.onload = function() {
+                alert('PDF file downloaded successfully.');
+                document.body.removeChild(iframe);
+            };
+        }
+		
 	</script>
 	<input type="hidden" id="sortDirection" th:value="${sortDirection}">
 </body>

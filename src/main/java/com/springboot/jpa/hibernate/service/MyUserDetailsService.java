@@ -1,6 +1,8 @@
 package com.springboot.jpa.hibernate.service;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -121,7 +123,9 @@ public class MyUserDetailsService implements UserDetailsService {
     public void importUsersCSV(MultipartFile file) throws IOException {
         List<CsvUserDto> users = CsvImportUtils.read(CsvUserDto.class, file.getInputStream());
         try {
-        	 userRepository.saveAll(transferCsvToUserData(users));
+       // 	List<User> userList = transferCsvToUserData(users);
+        	userRepository.saveAll(transferCsvToUserData(users));
+        	 System.out.println("...........user list imported............." );
 		} catch (Exception e) {
 		    Throwable cause = e.getCause();
 			 System.out.println("......................."+cause);
@@ -131,29 +135,64 @@ public class MyUserDetailsService implements UserDetailsService {
     }
     
     public List<User> transferCsvToUserData(List<CsvUserDto> csvUserDtoList) {
-    	 return csvUserDtoList.stream()
-    	            .map(csvUserDto -> {
-    	                User user = new User();
-    	                user.setId(csvUserDto.getId());
-    	                user.setUsername(csvUserDto.getUsername());
-    	                user.setPassword(csvUserDto.getPassword());
-    	                user.setAccountNonLocked(csvUserDto.isAccountNonLocked());
+    	
+    	List<User> userList = new ArrayList<User>();
+    	for(CsvUserDto csvUserDto :csvUserDtoList) {
+    		 User user = new User();
+    		 List<Role> roleList = new ArrayList<Role>();
+             user.setId(csvUserDto.getId());
+             user.setUsername(csvUserDto.getUsername());
+             user.setPassword(csvUserDto.getPassword());
+             user.setAccountNonLocked(csvUserDto.isAccountNonLocked());
+             
+    		List<String> roleNameList = csvUserDto.getRoles();
+            for(String rolesString : roleNameList) {
+            	
+            	    rolesString = rolesString.trim();
+            	    String[] roleNames = rolesString.split("\\s*,\\s*");
+	                	                
+	                for(String roleName : roleNames) {
+	                	Role role = roleRepository.findByName(roleName);
+	                    if (role == null) {
+	                        role = new Role();
+	                        role.setName(roleName);
+	                        role = roleRepository.save(role);
+	                    }
+	                    roleList.add(role);
+	                }
+            	
+            }
 
-    	                List<Role> roles = csvUserDto.getRoles().stream().map(roleName -> {
-    	                    Role role = roleRepository.findByName(roleName);
-    	                    if (role == null) {
-    	                        role = new Role();
-    	                        role.setName(roleName);
-    	                        role = roleRepository.save(role);
-    	                    }
-    	                    return role;
-    	                }).collect(Collectors.toList());
-
-    	                user.setRoles(roles);
-    	                user.setFailedAttemptCount(csvUserDto.getFailedAttemptCount());
-    	                user.setNeedsPasswordChange(csvUserDto.isNeedsPasswordChange());
-    	                return user;
-    	            })
-    	            .collect(Collectors.toList());
+            user.setRoles(roleList);
+            user.setFailedAttemptCount(csvUserDto.getFailedAttemptCount());
+            user.setNeedsPasswordChange(csvUserDto.isNeedsPasswordChange());
+            userList.add(user);
+    	}
+    	return userList;
+    	
+//    	 return csvUserDtoList.stream()
+//    	            .map(csvUserDto -> {
+//    	                User user = new User();
+//    	                user.setId(csvUserDto.getId());
+//    	                user.setUsername(csvUserDto.getUsername());
+//    	                user.setPassword(csvUserDto.getPassword());
+//    	                user.setAccountNonLocked(csvUserDto.isAccountNonLocked()); 
+//    	                
+//    	                List<Role> roles = csvUserDto.getRoles().stream().map(roleName -> {
+//    	                    Role role = roleRepository.findByName(roleName);
+//    	                    if (role == null) {
+//    	                        role = new Role();
+//    	                        role.setName(roleName);
+//    	                        role = roleRepository.save(role);
+//    	                    }
+//    	                    return role;
+//    	                }).collect(Collectors.toList());
+//    	               
+//    	                user.setRoles(roles);
+//    	                user.setFailedAttemptCount(csvUserDto.getFailedAttemptCount());
+//    	                user.setNeedsPasswordChange(csvUserDto.isNeedsPasswordChange());
+//    	                return user;
+//    	            })
+//    	            .collect(Collectors.toList());
     	}
 }
