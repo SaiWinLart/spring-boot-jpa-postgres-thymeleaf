@@ -5,13 +5,14 @@
 <meta charset="UTF-8" />
 <title>User List</title>
 <link rel="stylesheet" type="text/css" th:href="@{/css/userList.css}" />
+<script th:src="@{/js/UserList.js}" type="text/javascript"></script>
 </head>
 <body class="container">
 	<div th:insert="~{'/header.html'}"></div>
 	<br>
 	<div class="button-row">
 		<form th:action="@{/admin/downloadUsers-csv}" method="get">
-			<button type="submit" id="download-button"
+			<button type="submit" id="download-button" onclick="downloadCsv()"
 				th:if="${#authorization.expression('hasRole(''ROLE_ADMIN'')')}">Download
 				Users CSV</button>
 		</form>
@@ -80,42 +81,6 @@
 			th:if="${currentPage < totalPages - 1}">Next</a>
 	</div>
 
-	<script>
-		function sort(column) {
-			let sortDirection = document.getElementById('sortDirection').value;
-			sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
-			document.getElementById('sortDirection').value = sortDirection;
-
-			// Update sort icon based on sort direction and column
-			const sortIconId = document.getElementById('sortIconId');
-			const sortIconUsername = document
-					.getElementById('sortIconUsername');
-			if (column === 'id') {
-				sortIconId.innerHTML = sortDirection === 'asc' ? '▲' : '▼';
-				sortIconUsername.innerHTML = '';
-			} else if (column === 'username') {
-				sortIconUsername.innerHTML = sortDirection === 'asc' ? '▲'
-						: '▼';
-				sortIconId.innerHTML = '';
-			}
-
-			window.location.href = `/admin/get-all-users?page=0&size=10&sortColumn=${column}&sortDirection=${sortDirection}`;
-		}
-		
-		
-		function downloadPdf() {
-            var iframe = document.createElement('iframe');
-            iframe.style.display = 'none';
-            iframe.src = '/admin/get-all-users';
-            document.body.appendChild(iframe);
-
-            iframe.onload = function() {
-                alert('PDF file downloaded successfully.');
-                document.body.removeChild(iframe);
-            };
-        }
-		
-	</script>
 	<input type="hidden" id="sortDirection" th:value="${sortDirection}">
 </body>
 </html>

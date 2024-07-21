@@ -8,8 +8,8 @@
 	<div th:insert="~{'/header.html'}"></div>
 	<form id="mmnrcForm" th:action="@{/admin/update-mmnrc}"
 		th:object="${mmnrc}" method="post">
-		<label for="mmId">MMID:</label><br> <input type="text" id="mmId" readonly="readonly"
-			th:field="*{mmId}"><br>
+		<label for="mmId">MMID:</label><br> <input type="text" id="mmId"
+			readonly="readonly" th:field="*{mmId}"><br>
 		<p th:if="${#fields.hasErrors('mmId')}" th:errorclass="error"
 			th:errors="*{mmId}" />
 		<label for="name">Name:</label><br> <input type="text" id="name"
@@ -30,23 +30,20 @@
 			type="text" id="motherName" th:field="*{motherName}"><br>
 		<p th:if="${#fields.hasErrors('motherName')}" th:errorclass="error"
 			th:errors="*{motherName}" />
-			
-		<label for="issueDate">Issue Date:</label><br> 
-		<input type="date"
-			id="issueDate" th:field="*{issueDate}"><br> 
-			<label for="dateOfBirth">Date of Birth:</label><br> 
-			<input type="date"
-			id="dateOfBirth" th:field="*{dateOfBirth}"><br>
-			<input type="text" th:field="${mmnrc.dateOfBirth}"  >
-			<!--  <input type="date" id="dateOfBirth" th:field="${*{dateOfBirth}?.format('yyyy-MM-dd')}">
-			-->
-			<input type="date" id="dateOfBirth" value="dateOfBirth">
 
-			
+		<label for="issueDate">Issue Date:</label><br> <input type="date"
+			th:name="issueDate" th:value="${mmnrc.issueDate}"> <br>
+
+		<p th:if="${#fields.hasErrors('issueDate')}" th:errorclass="error"
+			th:errors="*{issueDate}" />
+
+		<label for="dateOfBirth">Date of Birth:</label><br> <input
+			type="date" th:name="dateOfBirth" th:value="${mmnrc.dateOfBirth}">
+
 		<p th:if="${#fields.hasErrors('dateOfBirth')}" th:errorclass="error"
 			th:errors="*{dateOfBirth}" />
-			
-			
+
+
 		<label for="cityOfBirthPlace">City of Birth Place:</label><br> <select
 			id="cityOfBirthPlace" th:field="*{cityOfBirthPlace}">
 			<option

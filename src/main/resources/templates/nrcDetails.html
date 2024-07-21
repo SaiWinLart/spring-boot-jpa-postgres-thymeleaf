@@ -30,29 +30,33 @@
 				<b>Mother's Name:</b> <span th:text="${mmnrc.motherName}"></span>
 			</p>
 			<p>
-				<b>Date of Birth:</b> <span th:text="${mmnrc.dateOfBirth}"></span>
+				<b>Date of Birth:</b> <span th:text="${#temporals.format(mmnrc.dateOfBirth, 'dd/MM/yyyy')}"></span>
 			</p>
-			<p>
-				<b>Issue Date:</b> <span th:text="${mmnrc.issueDate}"></span>
-			</p>
-			<p>
-				<b>City of Birth:</b> <span th:text="${mmnrc.cityOfBirthPlace}"></span>
-			</p>
-			<p>
-				<b>State/Division:</b> <span th:text="${mmnrc.stateAndDivision}"></span>
-			</p>
-			<p>
-				<b>Occupation:</b> <span
-					th:text="${mmnrc.occupation != null && mmnrc.occupation != '' ? mmnrc.occupation : 'NA'}"></span>
-			</p>
-			<p>
-				<b>Blood Type:</b> <span th:text="${mmnrc.bloodType}"></span>
+<p>
+				<b>Issue Date:</b> <span th:text="${#temporals.format(mmnrc.issueDate, 'dd/MM/yyyy')}"></span>
 			</p>
 
-			<p>
-				<b>Address:</b> <span
-					th:text="${mmnrc.addressId != null && mmnrc.addressId != '' ? mmnrc.addressId : 'NA'}"></span>
-			</p>
+  
+
+
+					<p>
+						<b>City of Birth:</b> <span th:text="${mmnrc.cityOfBirthPlace}"></span>
+					</p>
+					<p>
+						<b>State/Division:</b> <span th:text="${mmnrc.stateAndDivision}"></span>
+					</p>
+					<p>
+						<b>Occupation:</b> <span
+							th:text="${mmnrc.occupation != null && mmnrc.occupation != '' ? mmnrc.occupation : 'NA'}"></span>
+					</p>
+					<p>
+						<b>Blood Type:</b> <span th:text="${mmnrc.bloodType}"></span>
+					</p>
+
+					<p>
+						<b>Address:</b> <span
+							th:text="${mmnrc.addressId != null && mmnrc.addressId != '' ? mmnrc.addressId : 'NA'}"></span>
+					</p>
 		</div>
 		<br>
 		<form th:action="@{/admin/edit-mmnrc}" method="get">

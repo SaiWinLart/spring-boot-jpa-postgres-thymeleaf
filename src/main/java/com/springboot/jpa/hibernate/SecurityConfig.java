@@ -9,8 +9,11 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.thymeleaf.extras.java8time.dialect.Java8TimeDialect;
 import org.thymeleaf.extras.springsecurity6.dialect.SpringSecurityDialect;
+import org.thymeleaf.spring6.ISpringTemplateEngine;
+import org.thymeleaf.spring6.SpringTemplateEngine;
+import org.thymeleaf.templateresolver.ITemplateResolver;
 
 @Configuration
 @EnableWebSecurity
@@ -56,5 +59,13 @@ public class SecurityConfig {
 	public SpringSecurityDialect springSecurityDialect() {
 		return new SpringSecurityDialect();
 	}
-
+//	 
+//	@Bean
+//	public ISpringTemplateEngine templateEngine(ITemplateResolver templateResolver) {
+//	    SpringTemplateEngine engine = new SpringTemplateEngine();
+//	    engine.addDialect(new Java8TimeDialect());
+//	    engine.setTemplateResolver(templateResolver);
+//	    return engine;
+//	}
+	
 }

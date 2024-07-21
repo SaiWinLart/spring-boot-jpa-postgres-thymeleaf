@@ -37,9 +37,11 @@ public class MMnrc {
 	private String fatherName;
 	@NotEmpty(message = "Mother Name cannot be empty.")
 	private String motherName;
+	@NotNull(message = "issue Date cannot be null")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate issueDate;
 	@NotNull(message = "Date of birth cannot be null")
-	@DateTimeFormat(pattern = "MM-dd-yyyy")
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private LocalDate dateOfBirth;
 	@Enumerated(EnumType.ORDINAL)
 	private CityOfBirthPlace cityOfBirthPlace;

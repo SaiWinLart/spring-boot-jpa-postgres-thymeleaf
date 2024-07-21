@@ -2,10 +2,8 @@ package com.springboot.jpa.hibernate.service;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Collectors;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -36,8 +34,7 @@ public class MyUserDetailsService implements UserDetailsService {
 	}
 
 	public void createUser(User user) {
-		userRepository.save(user);
-
+		userRepository.save(user); 
 	}
 
 	public List<User> getAllUsers() {
@@ -45,14 +42,14 @@ public class MyUserDetailsService implements UserDetailsService {
 		return userRepository.findAll();
 	}
 
-	 public Page<User> getUsers(int page, int size, String sortColumn, String sortDirection) {
-	        Sort sort = Sort.by(sortColumn);
-	        if (sortDirection.equals("desc")) {
-	            sort = sort.descending();
-	        }
-	        return userRepository.findAll(PageRequest.of(page, size, sort));
-	    }
-	 
+	public Page<User> getUsers(int page, int size, String sortColumn, String sortDirection) {
+		Sort sort = Sort.by(sortColumn);
+		if (sortDirection.equals("desc")) {
+			sort = sort.descending();
+		}
+		return userRepository.findAll(PageRequest.of(page, size, sort));
+	}
+
 	public User getUserById(Long id) {
 
 		Optional<User> optional = userRepository.findById(id);
@@ -64,7 +61,7 @@ public class MyUserDetailsService implements UserDetailsService {
 		}
 		return user;
 	}
-	
+
 	public User getUserByusername(String username) {
 
 		Optional<User> optional = userRepository.findByUsername(username);
@@ -106,11 +103,7 @@ public class MyUserDetailsService implements UserDetailsService {
 		} else {
 //			reSetFailedAttemptCount(user);
 		}
-//		org.springframework.security.core.userdetails.User customUser = new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(),
-//				user.isEnabled(), true, true, user.getAccountNonLocked(),
-//				AuthorityUtils.createAuthorityList(user.getRoles().stream().map(Role::getName).toArray(String[]::new)));
-//	  
-
+ 
 		return new UserPrincipal(user);
 	}
 
@@ -119,57 +112,53 @@ public class MyUserDetailsService implements UserDetailsService {
 		userRepository.save(user);
 	}
 
-
-    public void importUsersCSV(MultipartFile file) throws IOException {
-        List<CsvUserDto> users = CsvImportUtils.read(CsvUserDto.class, file.getInputStream());
-        try {
-       // 	List<User> userList = transferCsvToUserData(users);
-        	userRepository.saveAll(transferCsvToUserData(users));
-        	 System.out.println("...........user list imported............." );
+	public void importUsersCSV(MultipartFile file) throws IOException {
+		List<CsvUserDto> users = CsvImportUtils.read(CsvUserDto.class, file.getInputStream());
+		try {
+			userRepository.saveAll(transferCsvToUserData(users));
 		} catch (Exception e) {
-		    Throwable cause = e.getCause();
-			 System.out.println("......................."+cause);
-			 throw new RuntimeException(cause);
+			Throwable cause = e.getCause();
+			throw new RuntimeException(cause);
 		}
-       
-    }
-    
-    public List<User> transferCsvToUserData(List<CsvUserDto> csvUserDtoList) {
-    	
-    	List<User> userList = new ArrayList<User>();
-    	for(CsvUserDto csvUserDto :csvUserDtoList) {
-    		 User user = new User();
-    		 List<Role> roleList = new ArrayList<Role>();
-             user.setId(csvUserDto.getId());
-             user.setUsername(csvUserDto.getUsername());
-             user.setPassword(csvUserDto.getPassword());
-             user.setAccountNonLocked(csvUserDto.isAccountNonLocked());
-             
-    		List<String> roleNameList = csvUserDto.getRoles();
-            for(String rolesString : roleNameList) {
-            	
-            	    rolesString = rolesString.trim();
-            	    String[] roleNames = rolesString.split("\\s*,\\s*");
-	                	                
-	                for(String roleName : roleNames) {
-	                	Role role = roleRepository.findByName(roleName);
-	                    if (role == null) {
-	                        role = new Role();
-	                        role.setName(roleName);
-	                        role = roleRepository.save(role);
-	                    }
-	                    roleList.add(role);
-	                }
-            	
-            }
 
-            user.setRoles(roleList);
-            user.setFailedAttemptCount(csvUserDto.getFailedAttemptCount());
-            user.setNeedsPasswordChange(csvUserDto.isNeedsPasswordChange());
-            userList.add(user);
-    	}
-    	return userList;
-    	
+	}
+
+	public List<User> transferCsvToUserData(List<CsvUserDto> csvUserDtoList) {
+
+		List<User> userList = new ArrayList<User>();
+		for (CsvUserDto csvUserDto : csvUserDtoList) {
+			User user = new User();
+			List<Role> roleList = new ArrayList<Role>();
+			user.setId(csvUserDto.getId());
+			user.setUsername(csvUserDto.getUsername());
+			user.setPassword(csvUserDto.getPassword());
+			user.setAccountNonLocked(csvUserDto.isAccountNonLocked());
+
+			List<String> roleNameList = csvUserDto.getRoles();
+			for (String rolesString : roleNameList) {
+
+				rolesString = rolesString.trim();
+				String[] roleNames = rolesString.split("\\s*,\\s*");
+
+				for (String roleName : roleNames) {
+					Role role = roleRepository.findByName(roleName);
+					if (role == null) {
+						role = new Role();
+						role.setName(roleName);
+						role = roleRepository.save(role);
+					}
+					roleList.add(role);
+				}
+
+			}
+
+			user.setRoles(roleList);
+			user.setFailedAttemptCount(csvUserDto.getFailedAttemptCount());
+			user.setNeedsPasswordChange(csvUserDto.isNeedsPasswordChange());
+			userList.add(user);
+		}
+		return userList;
+
 //    	 return csvUserDtoList.stream()
 //    	            .map(csvUserDto -> {
 //    	                User user = new User();
@@ -194,5 +183,5 @@ public class MyUserDetailsService implements UserDetailsService {
 //    	                return user;
 //    	            })
 //    	            .collect(Collectors.toList());
-    	}
+	}
 }
